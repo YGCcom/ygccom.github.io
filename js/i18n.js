@@ -17,6 +17,28 @@
     // ================================================================
     var L = {};
 
+    // 关于我们独立于旧登录文案，避免语言切换覆盖入口。
+    var ABOUT_ZH = {
+        nav_about: '关于我们', about_tagline: '自由探索，长期同行。',
+        about_p1: '4U4N 是 StarCraft 团队旗下的 Minecraft 无规则玩法服务器。项目于 2023 年 10 月落地，并于 2024 年正式进入发展与推广阶段。',
+        about_p2: '从最初的搭建到持续运营，我们始终围绕自由的玩法体验与稳定的服务器环境推进建设。多年来，服务器保持稳定运行，玩家群体逐步增长，也积累了一批长期活跃的常驻玩家。通过多个渠道持续推广，越来越多的新玩家来到这里，留下属于自己的故事。',
+        about_p3: '我们希望，自由不只是一句宣传语，而是每位玩家都能实际感受到的游戏体验。在这里，你可以独自探索、钻研生电、搭建基地，也可以与伙伴并肩生存，在合作与对抗中选择自己的道路。',
+        about_p4: '无规则玩法意味着更大的自由，也伴随着更多未知。我们尊重玩法的多样性，同时维护服务器运行与社区交流所需的基本秩序，让这片世界能够长久延续。',
+        about_signoff: '世界由我们维护，故事由你们书写。欢迎来到 4U4N。',
+        about_date1: '2023 年 10 月', about_date2: '2024 年', about_date3: '至今',
+        about_step1: '项目落地', about_step2: '正式发展与推广', about_step3: '持续运营'
+    };
+    var ABOUT_EN = {
+        nav_about: 'About Us', about_tagline: 'Explore freely. Stay for the journey.',
+        about_p1: '4U4N is a Minecraft anarchy server operated by the StarCraft team. The project began in October 2023 and entered its development and promotion phase in 2024.',
+        about_p2: 'From the initial setup to ongoing operation, we have focused on freedom of play and a stable server environment. Over the years, the server has remained stable, its player community has gradually grown, and a dedicated group of regular players has made it their home. Continued promotion across multiple channels brings new players here to create their own stories.',
+        about_p3: 'We want freedom to be something every player experiences. Explore on your own, experiment with technical Minecraft, build a base, or survive alongside friends. Find your own path through cooperation and rivalry.',
+        about_p4: 'Anarchy gameplay brings greater freedom and more uncertainty. We respect different ways to play while maintaining the basic order needed for server operation and community communication, so this world can continue for years to come.',
+        about_signoff: 'We maintain the world. You write its stories. Welcome to 4U4N.',
+        about_date1: 'October 2023', about_date2: '2024', about_date3: 'Today',
+        about_step1: 'Project established', about_step2: 'Development and promotion', about_step3: 'Ongoing operation'
+    };
+
     // ── 中文 (zh) ──────────────────────────────────────────────
     L.zh = {
         // 页面标题
@@ -1186,6 +1208,13 @@
      * 获取翻译文本 — API 不变，完全兼容旧代码
      * 降级链: 目标语言 → en → zh → key
      */
+    Object.assign(L.zh, ABOUT_ZH);
+    Object.assign(L.en, ABOUT_EN);
+    var aboutLabels = { ko: '소개', ja: '私たちについて', ru: 'О нас', es: 'Sobre nosotros', fr: 'À propos', de: 'Über uns', pt: 'Sobre nós', th: 'เกี่ยวกับเรา' };
+    Object.keys(aboutLabels).forEach(function (lang) {
+        if (L[lang]) L[lang].nav_about = aboutLabels[lang];
+    });
+
     window.t = function (key, subst) {
         var lang = getLang();
         var text = (L[lang] && L[lang][key]) || (L['en'] && L['en'][key]) || (L['zh'] && L['zh'][key]) || key;

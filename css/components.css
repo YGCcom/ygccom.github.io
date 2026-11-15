@@ -119,6 +119,7 @@
 }
 
 details[open] .faq-question::before { transform: rotate(180deg); }
+details.faq-closing .faq-question::before { transform: rotate(0deg); }
 
 .faq-answer {
     padding: 0 1.25rem 1.25rem;

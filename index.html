@@ -2,6 +2,7 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <script src="js/anti-devtools.js?v=20261116-debug2"></script>
     <script>
         // 在样式与页面绘制前恢复主题，避免暗色模式先闪出白色。
         try {
@@ -43,21 +44,22 @@
     <!-- CSS 模块化加载 -->
     <link rel="stylesheet" href="css/titletype.css">
     <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/components.css?v=20261116-faq">
     <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/music-player.css">
     <link rel="stylesheet" href="css/tools.css">
-    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/about.css?v=20261116-about">
     <link rel="stylesheet" href="css/preloader.css">
     <link rel="stylesheet" href="css/dark-theme.css">
     <link rel="stylesheet" href="css/responsive.css">
-    <link rel="stylesheet" href="css/premium.css">
+    <link rel="stylesheet" href="css/premium.css?v=20261116-rules-join">
 
     <!-- JS 模块化加载 -->
     <script src="js/biome-chunk.js" defer></script>
     <script src="js/slime-chunk.js" defer></script>
     <script src="js/utils.js" defer></script>
     <script src="js/events.js" defer></script>
+    <script src="js/faq.js?v=20261116-faq" defer></script>
     <script src="js/navigation.js" defer></script>
     <script src="js/carousel.js" defer></script>
     <script src="js/background.js" defer></script>
@@ -66,13 +68,12 @@
     <script src="js/gradient-tool.js" defer></script>
     <script src="js/mcmmo-loader.js" defer></script>
     <script src="js/theme.js" defer></script>
-    <script src="js/auth.js" defer></script>
+    <script src="js/about.js?v=20261116-about" defer></script>
     <script src="js/terms.js" defer></script>
     <script src="js/moderator-rules.js" defer></script>
     <script src="js/preloader.js" defer></script>
     <script src="js/qq-avatar.js" defer></script>
-    <script src="js/anti-devtools.js" defer></script>
-    <script src="js/i18n.js?v=20261116-announcement" defer></script>
+    <script src="js/i18n.js?v=20261116-about" defer></script>
     <script src="js/typing-effect.js" defer></script>
 
 </head>
@@ -132,9 +133,9 @@
                             <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="th">🇹🇭 ไทย</a>
                         </div>
                     </div>
-                    <a href="javascript:void(0)" id="nav-login-btn" class="nav-login-btn">
-                        <i class="fas fa-user"></i><span id="nav-login-text">登录</span>
-                    </a>
+                    <button type="button" id="nav-about-btn" class="nav-login-btn" data-about-open aria-haspopup="dialog" aria-controls="about-modal">
+                        <i class="fas fa-info-circle" aria-hidden="true"></i><span data-i18n="nav_about">关于我们</span>
+                    </button>
                 </div>
             </div>
 
@@ -187,9 +188,9 @@
                 </div>
             </div>
         </div>
-        <a href="javascript:void(0)" id="nav-login-btn-mobile" class="mobile-login-btn">
-            <i class="fas fa-user"></i><span id="nav-login-text-mobile">登录</span>
-        </a>
+        <button type="button" id="nav-about-btn-mobile" class="mobile-login-btn" data-about-open aria-haspopup="dialog" aria-controls="about-modal">
+            <i class="fas fa-info-circle" aria-hidden="true"></i><span data-i18n="nav_about">关于我们</span>
+        </button>
     </div>
 </div>
 
@@ -408,7 +409,13 @@
                 </ul>
             </div>
         </div>
-        <p class="text-gray-600 text-center mt-6" data-i18n="rules_more">更多内容进群查看</p>
+        <div class="text-center mt-6">
+            <button type="button" class="rules-join-btn" data-action="qq" aria-haspopup="dialog" aria-controls="qq-group-modal">
+                <svg class="rules-join-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM15 15h3v3h3v3h-6zM21 12v3M12 3v3M3 12h3M12 9v6M9 12h9M12 18v3"/></svg>
+                <span data-i18n="rules_more">更多内容进群查看</span>
+                <svg class="rules-join-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+            </button>
+        </div>
     </div>
 </section>
 
@@ -460,20 +467,26 @@
                 <span class="team-group-count">03</span>
             </div>
             <div class="team-grid team-grid--management">
-                <article class="team-card">
+                <article class="team-card team-card--compact">
                     <div class="team-avatar-frame"><img data-qq="2506442080" src="https://q1.qlogo.cn/g?b=qq&nk=2506442080&s=100" class="team-avatar" alt="EarthMe" loading="lazy"></div>
-                    <h4 class="team-name">EarthMe</h4>
-                    <p class="team-role" data-i18n="team_role_host">服务器主机提供&amp;技术开发</p>
+                    <div class="team-card-body">
+                        <h4 class="team-name">EarthMe</h4>
+                        <p class="team-role" data-i18n="team_role_host">服务器主机提供&amp;技术开发</p>
+                    </div>
                 </article>
-                <article class="team-card">
+                <article class="team-card team-card--compact">
                     <div class="team-avatar-frame"><img data-qq="3337913379" src="https://q1.qlogo.cn/g?b=qq&nk=3337913379&s=100" class="team-avatar" alt="klop233" loading="lazy"></div>
-                    <h4 class="team-name">klop233</h4>
-                    <p class="team-role" data-i18n="team_role_support">技术支持</p>
+                    <div class="team-card-body">
+                        <h4 class="team-name">klop233</h4>
+                        <p class="team-role" data-i18n="team_role_support">技术支持</p>
+                    </div>
                 </article>
-                <article class="team-card">
+                <article class="team-card team-card--compact">
                     <div class="team-avatar-frame"><img data-qq="1564722665" src="https://q1.qlogo.cn/g?b=qq&nk=1564722665&s=100" class="team-avatar" alt="LiChirs93" loading="lazy"></div>
-                    <h4 class="team-name">LiChirs93</h4>
-                    <p class="team-role" data-i18n="team_role_support">技术支持</p>
+                    <div class="team-card-body">
+                        <h4 class="team-name">LiChirs93</h4>
+                        <p class="team-role" data-i18n="team_role_support">技术支持</p>
+                    </div>
                 </article>
             </div>
         </div>
@@ -907,56 +920,33 @@
     </div>
 </div>
 
-<!-- ====== 登录弹窗 ====== -->
-<div id="auth-modal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
-    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden transform scale-95 transition-all duration-300 relative">
-        <div class="h-2 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500"></div>
-        <div class="p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h3 class="text-2xl font-bold" id="auth-modal-title" data-i18n="auth_title_login">登录</h3>
-                <button id="close-auth-modal" class="text-gray-400 hover:text-gray-600 transition-colors relative z-20"><i class="fas fa-times text-xl"></i></button>
+<!-- 关于我们 -->
+<div id="about-modal" class="modal-mask" aria-hidden="true">
+    <section class="modal-content about-panel" role="dialog" aria-modal="true" aria-labelledby="about-title">
+        <button type="button" class="about-close" aria-label="关闭 / Close">&times;</button>
+        <header class="about-header">
+            <div class="about-brand">
+                <img src="./img/4u4nc.png" alt="4U4N" width="88" height="64">
+                <div><div class="about-eyebrow">STARCRAFT NETWORK</div><h2 id="about-title" data-i18n="nav_about">关于我们</h2></div>
             </div>
-            <div class="flex bg-gray-100 rounded-xl p-1 mb-6">
-                <button class="auth-tab flex-1 py-2 text-center rounded-lg font-bold text-sm transition-all bg-white shadow-sm text-primary" data-tab="login" id="auth-tab-login" data-i18n="auth_tab_login">登录</button>
-                <button class="auth-tab flex-1 py-2 text-center rounded-lg font-bold text-sm transition-all text-gray-500" data-tab="register" id="auth-tab-register" data-i18n="auth_tab_register">注册</button>
+            <p class="about-tagline" data-i18n="about_tagline">自由探索，长期同行。</p>
+        </header>
+        <div class="about-body">
+            <div class="about-copy">
+                <p class="" data-i18n="about_p1">4U4N 是 StarCraft 团队旗下的 Minecraft 无规则玩法服务器。项目于 2023 年 10 月落地，并于 2024 年正式进入发展与推广阶段。</p>
+                <p class="" data-i18n="about_p2">从最初的搭建到持续运营，我们始终围绕自由的玩法体验与稳定的服务器环境推进建设。多年来，服务器保持稳定运行，玩家群体逐步增长，也积累了一批长期活跃的常驻玩家。通过多个渠道持续推广，越来越多的新玩家来到这里，留下属于自己的故事。</p>
+                <p class="" data-i18n="about_p3">我们希望，自由不只是一句宣传语，而是每位玩家都能实际感受到的游戏体验。在这里，你可以独自探索、钻研生电、搭建基地，也可以与伙伴并肩生存，在合作与对抗中选择自己的道路。</p>
+                <p class="" data-i18n="about_p4">无规则玩法意味着更大的自由，也伴随着更多未知。我们尊重玩法的多样性，同时维护服务器运行与社区交流所需的基本秩序，让这片世界能够长久延续。</p>
             </div>
-            <div class="auth-form" id="auth-form-login">
-                <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="auth_username" for="login-username">用户名</label><input type="text" id="login-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" placeholder="输入你的游戏ID"></div>
-                <div class="mb-2"><label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="auth_password" for="login-password">密码</label><input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" placeholder="请输入密码"></div>
-                <div class="flex justify-end mb-4"><button id="forgot-password" class="text-xs text-gray-400 hover:text-primary transition-colors" data-i18n="auth_forgot">忘记密码？</button></div>
-                <!-- 同意服务条款 -->
-                <label class="flex items-start gap-2 mb-4 cursor-pointer select-none" id="terms-agree-wrap">
-                    <input type="checkbox" id="terms-agree-check" class="mt-0.5 w-4 h-4 rounded border-gray-300 text-cyan-500 focus:ring-cyan-400 cursor-pointer flex-shrink-0">
-                    <span class="text-xs text-gray-500 leading-relaxed"><span data-i18n="auth_agree">我已阅读并同意</span> <a href="docs.html#terms" target="_blank" rel="noopener" id="terms-link" onclick="try{sessionStorage.setItem('show_agree_bar','1')}catch(e){}" class="text-primary hover:underline font-medium" data-i18n="auth_terms_link">《服务条款》</a></span>
-                </label>
-                <button id="auth-login-btn" class="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-cyan-400 to-teal-500 hover:from-cyan-500 hover:to-teal-600 transition-all active:scale-[0.98] shadow-md"><i class="fas fa-sign-in-alt mr-2"></i><span data-i18n="auth_btn_login">登录</span></button>
-                <p id="login-error" class="text-red-500 text-sm text-center mt-3 hidden"></p>
-            </div>
-            <div class="auth-form hidden" id="auth-form-register">
-                <div class="mb-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 border border-blue-200 rounded-xl text-center">
-                    <i class="fas fa-info-circle text-blue-500 text-3xl mb-3"></i>
-                    <h4 class="font-bold text-blue-700 mb-2" data-i18n="auth_register_title">无需在此注册</h4>
-                    <p class="text-sm text-blue-600" data-i18n="auth_register_desc" data-i18n-type="html">请直接在 <strong>4U4N 服务器</strong> 中注册：</p>
-                    <div class="bg-white rounded-lg px-4 py-3 my-3 font-mono text-sm border border-blue-100 inline-block" data-i18n="auth_register_instr">服务器进入界面输入密码 然后确认密码</div>
-                    <p class="text-xs text-gray-500" data-i18n="auth_register_note">注册后使用游戏账号和密码在此登录</p>
-                </div>
-                <button class="auth-tab-btn w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-cyan-400 to-teal-500 hover:from-cyan-500 transition-all active:scale-[0.98] shadow-md" onclick="window.switchAuthTab('login')"><i class="fas fa-arrow-left mr-2"></i><span data-i18n="auth_goto_login">已有账号？去登录</span></button>
-            </div>
-            <div class="mt-6 pt-4 border-t border-gray-100 text-center">
-                <p class="text-xs text-gray-400"><span data-i18n="auth_footer_text">登录即表示您已阅读并同意</span> <a href="docs.html#terms" target="_blank" rel="noopener" class="text-primary hover:underline font-medium" data-i18n="auth_terms_link">《服务条款》</a></p>
-            </div>
-            <!-- ⚠️ 开发中遮罩：登录功能完成后移除此 div 即可启用 -->
-            <div id="auth-dev-overlay" class="absolute inset-0 bg-white/95 flex flex-col items-center justify-center rounded-2xl z-10" style="margin-top:2px;">
-                <div class="text-5xl mb-4">🚧</div>
-                <h3 class="text-xl font-bold text-gray-700 mb-2" data-i18n="auth_dev_title">功能开发中</h3>
-                <p class="text-sm text-gray-500 mb-1" data-i18n="auth_dev_sub">Under Development</p>
-                <p class="text-xs text-gray-400" data-i18n="auth_dev_desc">登录和注册功能暂时不可用，敬请期待</p>
-            </div>
+            <p class="about-signoff" data-i18n="about_signoff">世界由我们维护，故事由你们书写。欢迎来到 4U4N。</p>
+            <ol class="about-timeline">
+                <li><strong class="" data-i18n="about_date1">2023 年 10 月</strong><span class="" data-i18n="about_step1">项目落地</span></li>
+                <li><strong class="" data-i18n="about_date2">2024 年</strong><span class="" data-i18n="about_step2">正式发展与推广</span></li>
+                <li><strong class="" data-i18n="about_date3">至今</strong><span class="" data-i18n="about_step3">持续运营</span></li>
+            </ol>
         </div>
-    </div>
+    </section>
 </div>
-
-<!-- 服务条款位于 docs.html#terms，登录弹窗与页脚均跳转该处 -->
 
 <!-- ====== 协管守则弹窗 ====== -->
 <div id="moderator-rules-modal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
