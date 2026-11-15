@@ -6,22 +6,26 @@
     <title data-i18n="page_title">4U4N 无规则生存服务器</title>
     <link rel="icon" href="./img/icon.png">
 
-    <!-- 字体 -->
+    <!-- 站点字体：加载失败时自动回退系统字体，不影响布局 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
 
-    <!-- 字体&引入 -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <!-- 样式/脚本依赖全部本地化：避免外部 CDN 不可达时出现大面积空白 UI -->
+    <link rel="stylesheet" href="vendor/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="css/icon-fallback.css">
+    <script src="vendor/tailwind/tailwind.js"></script>
+    <script src="vendor/chartjs/chart.umd.js" defer></script>
+    <script src="js/icon-fallback.js" defer></script>
     <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { primary: '#007AFF', secondary: '#5856D6' },
-                    borderRadius: { 'button': '4px' }
+        if (window.tailwind) {
+            tailwind.config = {
+                theme: {
+                    extend: {
+                        colors: { primary: '#007AFF', secondary: '#5856D6' },
+                        borderRadius: { 'button': '4px' }
+                    }
                 }
             }
         }
@@ -33,13 +37,12 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/modals.css">
     <link rel="stylesheet" href="css/music-player.css">
-    <!-- 设置功能暂停开发 -->
-    <!-- <link rel="stylesheet" href="css/settings.css"> -->
     <link rel="stylesheet" href="css/tools.css">
     <link rel="stylesheet" href="css/auth.css">
     <link rel="stylesheet" href="css/preloader.css">
     <link rel="stylesheet" href="css/dark-theme.css">
     <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/premium.css">
 
     <!-- JS 模块化加载 -->
     <script src="js/biome-chunk.js" defer></script>
@@ -50,8 +53,6 @@
     <script src="js/carousel.js" defer></script>
     <script src="js/server-status.js" defer></script>
     <script src="js/music-player.js" defer></script>
-    <!-- 设置功能暂停开发 -->
-    <!-- <script src="js/settings.js" defer></script> -->
     <script src="js/gradient-tool.js" defer></script>
     <script src="js/mcmmo-loader.js" defer></script>
     <script src="js/theme.js" defer></script>
@@ -82,91 +83,108 @@
 </div>
 
 <!-- ====== 导航栏 ====== -->
-<nav class="fixed w-full z-50 glass-nav">
-    <div class="max-w-7xl mx-auto px-4">
-        <div class="flex justify-between items-center h-16">
-            <div class="flex items-center">
-                <span class="text-2xl font-['Pacifico'] text-primary"><img src="./img/4u4nc.png" alt="4U4N"></span>
-            </div>
-            <button class="mobile-menu-btn md:hidden" id="mobile-menu-btn">
-                <i class="fas fa-bars text-2xl text-primary"></i>
-            </button>
-            <div class="mobile-menu hidden absolute top-16 left-0 right-0 bg-white/95 backdrop-blur-md shadow-xl p-4 md:hidden rounded-b-2xl border-t border-gray-100" id="mobile-menu">
-                <div class="flex flex-col space-y-1">
+<nav class="site-nav glass-nav" id="site-nav">
+    <div class="nav-shell">
+        <div class="nav-row">
+            <a href="#hero" class="site-brand" aria-label="4U4N 首页">
+                <img src="./img/4u4nc.png" alt="4U4N" class="site-brand-img">
+                <span class="site-brand-caption">ANARCHY SURVIVAL</span>
+            </a>
+
+            <!-- 桌面导航 -->
+            <div class="nav-desktop">
+                <div class="nav-links">
                     <a href="#features" class="nav-link" data-i18n="nav_features">特色</a>
-                    <a href="#ip" class="nav-link" data-i18n="nav_ip">服务器IP</a>
+                    <a href="#ip" class="nav-link" data-i18n="nav_ip">IP</a>
                     <a href="#seed" class="nav-link" data-i18n="nav_seed">种子</a>
                     <a href="#advantages" class="nav-link" data-i18n="nav_advantages">优势</a>
                     <a href="#rules" class="nav-link" data-i18n="nav_rules">规则</a>
                     <a href="#team" class="nav-link" data-i18n="nav_team">团队</a>
-                    <a href="#faq" class="nav-link" data-i18n="nav_faq">常见问题</a>
+                    <a href="#faq" class="nav-link" data-i18n="nav_faq">问题</a>
                     <a href="#social" class="nav-link" data-i18n="nav_social">社交媒体</a>
+                    <span class="nav-divider" aria-hidden="true"></span>
                     <a href="javascript:void(0)" class="nav-link" data-action="help" data-i18n="nav_help">帮助</a>
                     <a href="javascript:void(0)" class="nav-link" data-action="announcement" data-i18n="nav_announce">公告</a>
-                    <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100 mb-2">
-                        <span class="text-sm text-gray-500" data-i18n="nav_theme_mode">主题模式</span>
-                        <div class="flex items-center gap-2">
-                            <button id="theme-toggle-mobile" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-all duration-300 text-gray-600">
-                                <i class="fas fa-moon" id="theme-icon-mobile"></i>
-                            </button>
-                            <div class="lang-dropdown">
-                                <button class="lang-toggle-btn lang-current flex items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-all duration-300 text-gray-600 font-medium text-xs" title="切换语言">🌐</button>
-                                <div class="lang-dropdown-menu">
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="zh">🇨🇳 中文</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="en">🇺🇸 English</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ko">🇰🇷 한국어</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ja">🇯🇵 日本語</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ru">🇷🇺 Русский</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="es">🇪🇸 Español</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="fr">🇫🇷 Français</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="de">🇩🇪 Deutsch</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="pt">🇧🇷 Português</a>
-                                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="th">🇹🇭 ไทย</a>
-                                </div>
-                            </div>
+                </div>
+                <div class="nav-actions">
+                    <button id="theme-toggle-desktop" class="nav-icon-btn" type="button" aria-label="切换主题" title="切换主题">
+                        <i class="fas fa-moon" id="theme-icon-desktop"></i>
+                    </button>
+                    <div class="lang-dropdown">
+                        <button class="lang-toggle-btn lang-current" type="button" aria-label="切换语言" title="切换语言">🌐</button>
+                        <div class="lang-dropdown-menu">
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="zh">🇨🇳 中文</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="en">🇺🇸 English</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ko">🇰🇷 한국어</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ja">🇯🇵 日本語</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ru">🇷🇺 Русский</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="es">🇪🇸 Español</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="fr">🇫🇷 Français</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="de">🇩🇪 Deutsch</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="pt">🇧🇷 Português</a>
+                            <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="th">🇹🇭 ไทย</a>
                         </div>
                     </div>
-                    <a href="javascript:void(0)" id="nav-login-btn-mobile" class="flex items-center gap-2 bg-gradient-to-r from-cyan-400 to-teal-500 text-white px-4 py-2.5 rounded-xl font-semibold">
-                        <i class="fas fa-user"></i><span id="nav-login-text-mobile">登录</span>
+                    <a href="javascript:void(0)" id="nav-login-btn" class="nav-login-btn">
+                        <i class="fas fa-user"></i><span id="nav-login-text">登录</span>
                     </a>
                 </div>
             </div>
-            <div class="hidden md:flex space-x-1">
-                <a href="#features" class="nav-link" data-i18n="nav_features">特色</a>
-                <a href="#ip" class="nav-link" data-i18n="nav_ip">IP</a>
-                <a href="#seed" class="nav-link" data-i18n="nav_seed">种子</a>
-                <a href="#advantages" class="nav-link" data-i18n="nav_advantages">优势</a>
-                <a href="#rules" class="nav-link" data-i18n="nav_rules">规则</a>
-                <a href="#team" class="nav-link" data-i18n="nav_team">团队</a>
-                <a href="#faq" class="nav-link" data-i18n="nav_faq">问题</a>
-                <a href="#social" class="nav-link" data-i18n="nav_social">社交媒体</a>
-                <a href="javascript:void(0)" class="nav-link" data-action="help" data-i18n="nav_help">帮助</a>
-                <a href="javascript:void(0)" class="nav-link" data-action="announcement" data-i18n="nav_announce">公告</a>
-                <button id="theme-toggle-desktop" class="w-9 h-9 flex items-center justify-center rounded-full hover:bg-gray-100 transition-all duration-300 text-gray-600">
-                    <i class="fas fa-moon" id="theme-icon-desktop"></i>
+
+            <!-- 移动端顶栏 -->
+            <div class="nav-mobile-bar">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" type="button" aria-label="打开菜单" aria-expanded="false" aria-controls="mobile-menu">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <div class="lang-dropdown">
-                    <button class="lang-toggle-btn lang-current flex items-center gap-1 px-2 py-1.5 rounded-lg hover:bg-gray-100 transition-all duration-300 text-gray-600 font-medium text-xs" title="切换语言">🌐</button>
-                    <div class="lang-dropdown-menu">
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="zh">🇨🇳 中文</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="en">🇺🇸 English</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ko">🇰🇷 한국어</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ja">🇯🇵 日本語</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ru">🇷🇺 Русский</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="es">🇪🇸 Español</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="fr">🇫🇷 Français</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="de">🇩🇪 Deutsch</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="pt">🇧🇷 Português</a>
-                        <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="th">🇹🇭 ไทย</a>
-                    </div>
-                </div>
-                <a href="javascript:void(0)" id="nav-login-btn" class="inline-flex items-center gap-1 bg-gradient-to-r from-cyan-400 to-teal-500 text-white px-4 py-1.5 rounded-full text-sm font-semibold">
-                    <i class="fas fa-user"></i><span id="nav-login-text">登录</span>
-                </a>
             </div>
         </div>
     </div>
 </nav>
+
+<!-- 移动端菜单遮罩与面板 -->
+<div class="nav-scrim" id="nav-scrim" aria-hidden="true"></div>
+<div class="mobile-menu" id="mobile-menu">
+    <div class="mobile-menu-inner">
+        <nav class="mobile-nav-links" aria-label="移动端导航">
+            <a href="#features" class="nav-link" data-i18n="nav_features">特色</a>
+            <a href="#ip" class="nav-link" data-i18n="nav_ip">服务器IP</a>
+            <a href="#seed" class="nav-link" data-i18n="nav_seed">种子</a>
+            <a href="#advantages" class="nav-link" data-i18n="nav_advantages">优势</a>
+            <a href="#rules" class="nav-link" data-i18n="nav_rules">规则</a>
+            <a href="#team" class="nav-link" data-i18n="nav_team">团队</a>
+            <a href="#faq" class="nav-link" data-i18n="nav_faq">常见问题</a>
+            <a href="#social" class="nav-link" data-i18n="nav_social">社交媒体</a>
+            <a href="javascript:void(0)" class="nav-link" data-action="help" data-i18n="nav_help">帮助</a>
+            <a href="javascript:void(0)" class="nav-link" data-action="announcement" data-i18n="nav_announce">公告</a>
+        </nav>
+        <div class="mobile-menu-tools">
+            <div class="mobile-tools-row">
+                <span class="mobile-tools-label" data-i18n="nav_theme_mode">主题模式</span>
+                <button id="theme-toggle-mobile" class="nav-icon-btn" type="button" aria-label="切换主题" title="切换主题">
+                    <i class="fas fa-moon" id="theme-icon-mobile"></i>
+                </button>
+            </div>
+            <div class="lang-dropdown mobile-lang">
+                <button class="lang-toggle-btn lang-current" type="button" aria-label="切换语言" title="切换语言">🌐</button>
+                <div class="lang-dropdown-menu">
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="zh">🇨🇳 中文</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="en">🇺🇸 English</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ko">🇰🇷 한국어</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ja">🇯🇵 日本語</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="ru">🇷🇺 Русский</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="es">🇪🇸 Español</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="fr">🇫🇷 Français</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="de">🇩🇪 Deutsch</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="pt">🇧🇷 Português</a>
+                    <a href="javascript:void(0)" class="lang-dropdown-item" data-lang="th">🇹🇭 ไทย</a>
+                </div>
+            </div>
+        </div>
+        <a href="javascript:void(0)" id="nav-login-btn-mobile" class="mobile-login-btn">
+            <i class="fas fa-user"></i><span id="nav-login-text-mobile">登录</span>
+        </a>
+    </div>
+</div>
 
 <!-- ====== 音乐提示弹窗 ====== -->
 <div id="music-tip-modal" class="modal-mask">
@@ -185,10 +203,6 @@
     </div>
 </div>
 
-<!-- 设置功能暂停开发 -->
-<!--
-<button id="settings-toggle-btn" ...>
--->
 <!-- ====== 音乐播放器 ====== -->
 <div id="music-player">
     <button id="music-toggle-btn" class="w-12 h-12 rounded-full bg-gradient-to-r from-cyan-500 to-teal-500 text-white shadow-lg flex items-center justify-center hover:scale-110 transition-all duration-300 active:scale-95">
@@ -235,7 +249,7 @@
             <div class="relative group/vol">
                 <button id="music-volume-btn" class="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-white transition-colors" title="音量"><i class="fas fa-volume-up text-sm" id="music-volume-icon"></i></button>
                 <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 p-2 bg-gray-800 rounded-xl shadow-lg opacity-0 invisible group-hover/vol:opacity-100 group-hover/vol:visible transition-all duration-200">
-                    <label for="music-volume"></label><input type="range" id="music-volume" min="0" max="1" step="0.01" value="0.08" class="w-20 h-1 bg-gray-600 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-pointer">
+                    <input type="range" id="music-volume" min="0" max="1" step="0.01" value="0.08" class="w-20 h-1 bg-gray-600 rounded-full appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3.5 [&::-webkit-slider-thumb]:h-3.5 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white [&::-webkit-slider-thumb]:cursor-pointer">
                 </div>
             </div>
         </div>
@@ -255,10 +269,9 @@
     <!-- 曲目由 music-player.js 中的 SONG_LIST 动态加载 -->
 </audio>
 
-<div id="preamble" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300"></div>
 
 <!-- ====== 英雄区域（轮播） ====== -->
-<section class="hero-section h-screen flex items-center justify-center text-center text-white relative overflow-hidden">
+<section id="hero" class="hero-section min-h-screen flex items-center justify-center text-center text-white relative overflow-hidden">
     <div class="absolute inset-0 z-0">
         <div class="carousel-slides h-full">
             <div class="carousel-slide absolute inset-0 transition-opacity duration-1000 opacity-100" style="background-image:url('./img/banner.png');background-size:cover;background-position:center;"></div>
@@ -274,14 +287,12 @@
         <p class="text-xl mb-8 drop-shadow-md" data-i18n="hero_subtitle">毫无规则与秩序，开启你的自由生存之旅</p>
         <p class="text-lg mb-8">
             <span data-i18n="hero_online">服务器在线人数:</span>
-            <span id="player-count" class="font-semibold text-green-400 cursor-pointer">
-                获取中...
-            </span>
+            <span id="player-count" class="font-semibold text-green-400 cursor-pointer"><span id="player-count-value">获取中...</span></span>
             / <span id="max-players" class="text-gray-300">--</span>
             <span id="server-status" class="ml-2 px-2 py-0.5 text-xs rounded-full bg-yellow-500">连接中</span>
             <span id="last-update" class="ml-2 text-xs text-gray-400">(更新中...)</span>
         </p>
-        <div class="flex flex-col sm:flex-row justify-center gap-4">
+        <div class="hero-actions">
             <a href="#features" class="hero-btn" data-i18n="hero_btn_explore">开始探索</a>
             <a href="javascript:void(0)" data-action="qq" class="hero-btn" data-i18n="hero_btn_join">立即加入</a>
             <a href="javascript:void(0)" data-action="utility" class="hero-btn" data-i18n="hero_btn_utility">服务器实用工具</a>
@@ -332,7 +343,7 @@
 <section id="ip" class="py-20 bg-primary/5 text-center">
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-4xl font-bold mb-8" data-i18n="ip_title">服务器地址</h2>
-        <div class="inline-flex flex-col sm:flex-row items-center gap-6 bg-white px-8 py-6 rounded-lg shadow-sm">
+        <div class="ip-panel inline-flex flex-col sm:flex-row items-center gap-6 bg-white px-8 py-6 rounded-lg shadow-sm">
             <div class="inline-flex items-center gap-4">
                 <span class="text-sm text-gray-500" data-i18n="ip_main_line">主线：</span>
                 <span id="ip-text" class="text-xl md:text-2xl font-mono">4u4n.qiunaruto.top</span>
@@ -358,7 +369,7 @@
 <section id="seed" class="py-20 bg-primary/5 text-center">
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-4xl font-bold mb-8" data-i18n="seed_title">服务器种子</h2>
-        <div class="inline-flex flex-col sm:flex-row items-center gap-6 bg-white px-8 py-6 rounded-lg shadow-sm">
+        <div class="ip-panel inline-flex flex-col sm:flex-row items-center gap-6 bg-white px-8 py-6 rounded-lg shadow-sm">
             <div class="inline-flex items-center gap-4">
                 <span class="text-sm text-gray-500" data-i18n="seed_label">种子：</span>
                 <span id="seed-text" class="text-xl md:text-2xl font-mono">-4925878461228879996</span>
@@ -411,80 +422,159 @@
 </section>
 
 <!-- ====== 团队区域 ====== -->
-<section id="team" class="py-20 bg-gray-50">
+<section id="team" class="py-20 team-section">
     <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-4xl font-bold text-center mb-1" data-i18n="team_title1">运营与管理团队</h2>
-        <h2 class="font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-pink-400" data-i18n="team_title2">本服务器项目内部核心成员</h2>
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center"><img src="https://q1.qlogo.cn/g?b=qq&nk=3466829709&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="xiaomu18" loading="lazy"><h3 class="text-lg font-bold">xiaomu18</h3><p class="text-gray-600 text-sm" data-i18n="team_role_owner">法定服主</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center"><img src="https://q1.qlogo.cn/g?b=qq&nk=1782764161&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="叶小光" loading="lazy"><h3 class="text-lg font-bold">叶小光</h3><p class="text-gray-600 text-sm" data-i18n="team_role_admin">行政管理</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center"><img src="https://q1.qlogo.cn/g?b=qq&nk=2506442080&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="EarthMe" loading="lazy"><h3 class="text-lg font-bold">EarthMe</h3><p class="text-gray-600 text-sm" data-i18n="team_role_host">服务器主机提供&amp;技术开发</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center"><img src="https://q1.qlogo.cn/g?b=qq&nk=3337913379&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="klop233" loading="lazy"><h3 class="text-lg font-bold">klop233</h3><p class="text-gray-600 text-sm" data-i18n="team_role_support">技术支持</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center"><img src="https://q1.qlogo.cn/g?b=qq&nk=1564722665&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="LiChirs93" loading="lazy"><h3 class="text-lg font-bold">LiChirs93</h3><p class="text-gray-600 text-sm" data-i18n="team_role_support">技术支持</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center"><img src="https://q1.qlogo.cn/g?b=qq&nk=3262178852&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="ATRI" loading="lazy"><h3 class="text-lg font-bold">ATRI</h3><p class="text-gray-600 text-sm" data-i18n="team_role_bot">机器人</p></div>
+        <header class="section-head section-head--center">
+            <h2 class="section-title" data-i18n="team_title1">运营与管理团队</h2>
+            <p class="section-subtitle" data-i18n="team_title2">本服务器项目内部核心成员</p>
+        </header>
+
+        <!-- 分组一：创始人 & 服主 -->
+        <div class="team-group">
+            <div class="team-group-head">
+                <span class="team-group-icon"><i class="fas fa-crown"></i></span>
+                <h3 class="team-group-title" data-i18n="team_group_founders">创始人 &amp; 服主</h3>
+                <span class="team-group-line" aria-hidden="true"></span>
+                <span class="team-group-count">02</span>
+            </div>
+            <div class="team-grid team-grid--founders">
+                <article class="team-card team-card--spotlight">
+                    <img data-qq="3466829709" src="https://q1.qlogo.cn/g?b=qq&nk=3466829709&s=100" class="team-avatar team-avatar--lg" alt="xiaomu18" loading="lazy">
+                    <div class="team-card-body">
+                        <h4 class="team-name">xiaomu18</h4>
+                        <div class="team-badges">
+                            <span class="team-badge team-badge--gold" data-i18n="team_role_founder">创始人</span>
+                            <span class="team-badge" data-i18n="team_role_owner">服主</span>
+                        </div>
+                    </div>
+                </article>
+                <article class="team-card team-card--spotlight">
+                    <img data-qq="1782764161" src="https://q1.qlogo.cn/g?b=qq&nk=1782764161&s=100" class="team-avatar team-avatar--lg" alt="叶小光" loading="lazy">
+                    <div class="team-card-body">
+                        <h4 class="team-name">叶小光</h4>
+                        <div class="team-badges">
+                            <span class="team-badge team-badge--gold" data-i18n="team_role_founder">创始人</span>
+                        </div>
+                    </div>
+                </article>
+            </div>
         </div>
-        <h2 class="text-4xl font-bold text-center mt-16 mb-1" data-i18n="team_title3">服务器协助管理</h2>
-        <h2 class="font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400" data-i18n="team_title4">第三方玩家协助管理</h2>
-        <div class="flex flex-wrap justify-center gap-4">
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center w-40"><img src="https://q1.qlogo.cn/g?b=qq&nk=1098355766&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="YGCcom" loading="lazy"><h3 class="text-lg font-bold">YGCcom</h3><p class="text-gray-600 text-sm" data-i18n="team_role_assist">协助管理</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center w-40"><img src="https://q1.qlogo.cn/g?b=qq&nk=924549734&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="有头发的光头强" loading="lazy"><h3 class="text-lg font-bold">有头发的光头强</h3><p class="text-gray-600 text-sm" data-i18n="team_role_assist">协助管理</p></div>
-            <div class="team-card bg-white p-4 rounded-lg shadow-lg text-center w-40"><img src="https://q1.qlogo.cn/g?b=qq&nk=3525951954&s=100" class="w-20 h-20 rounded-full mx-auto mb-3 border-4 border-gray-100" alt="YBTsa" loading="lazy"><h3 class="text-lg font-bold">YBTsa</h3><p class="text-gray-600 text-sm" data-i18n="team_role_assist">协助管理</p></div>
+
+        <!-- 分组二：现任管理组 -->
+        <div class="team-group">
+            <div class="team-group-head">
+                <span class="team-group-icon"><i class="fas fa-users"></i></span>
+                <h3 class="team-group-title" data-i18n="team_group_management">现任管理组</h3>
+                <span class="team-group-line" aria-hidden="true"></span>
+                <span class="team-group-count">03</span>
+            </div>
+            <div class="team-grid team-grid--management">
+                <article class="team-card">
+                    <div class="team-avatar-frame"><img data-qq="2506442080" src="https://q1.qlogo.cn/g?b=qq&nk=2506442080&s=100" class="team-avatar" alt="EarthMe" loading="lazy"></div>
+                    <h4 class="team-name">EarthMe</h4>
+                    <p class="team-role" data-i18n="team_role_host">服务器主机提供&amp;技术开发</p>
+                </article>
+                <article class="team-card">
+                    <div class="team-avatar-frame"><img data-qq="3337913379" src="https://q1.qlogo.cn/g?b=qq&nk=3337913379&s=100" class="team-avatar" alt="klop233" loading="lazy"></div>
+                    <h4 class="team-name">klop233</h4>
+                    <p class="team-role" data-i18n="team_role_support">技术支持</p>
+                </article>
+                <article class="team-card">
+                    <div class="team-avatar-frame"><img data-qq="1564722665" src="https://q1.qlogo.cn/g?b=qq&nk=1564722665&s=100" class="team-avatar" alt="LiChirs93" loading="lazy"></div>
+                    <h4 class="team-name">LiChirs93</h4>
+                    <p class="team-role" data-i18n="team_role_support">技术支持</p>
+                </article>
+            </div>
         </div>
-        <div class="text-center mt-8">
-            <a href="javascript:void(0)" id="moderator-rules-link" class="text-sm text-gray-400 hover:text-primary transition-colors duration-200"><i class="fas fa-book mr-1"></i><span data-i18n="team_mod_rules">协管守则</span></a>
+
+        <!-- 分组三：协管组（人员不变，仅调整排版） -->
+        <div class="team-group team-group--assist">
+            <div class="team-group-head">
+                <span class="team-group-icon"><i class="fas fa-user-check"></i></span>
+                <h3 class="team-group-title" data-i18n="team_title3">服务器协助管理</h3>
+                <span class="team-group-line" aria-hidden="true"></span>
+                <span class="team-group-count">03</span>
+            </div>
+            <p class="team-group-note" data-i18n="team_title4">第三方玩家协助管理</p>
+            <div class="team-grid team-grid--assist">
+                <article class="team-card team-card--compact">
+                    <img data-qq="1098355766" src="https://q1.qlogo.cn/g?b=qq&nk=1098355766&s=100" class="team-avatar team-avatar--sm" alt="YGCcom" loading="lazy">
+                    <div class="team-card-body">
+                        <h4 class="team-name">YGCcom</h4>
+                        <p class="team-role" data-i18n="team_role_assist">协助管理</p>
+                    </div>
+                </article>
+                <article class="team-card team-card--compact">
+                    <img data-qq="924549734" src="https://q1.qlogo.cn/g?b=qq&nk=924549734&s=100" class="team-avatar team-avatar--sm" alt="有头发的光头强" loading="lazy">
+                    <div class="team-card-body">
+                        <h4 class="team-name">有头发的光头强</h4>
+                        <p class="team-role" data-i18n="team_role_assist">协助管理</p>
+                    </div>
+                </article>
+                <article class="team-card team-card--compact">
+                    <img data-qq="3525951954" src="https://q1.qlogo.cn/g?b=qq&nk=3525951954&s=100" class="team-avatar team-avatar--sm" alt="YBTsa" loading="lazy">
+                    <div class="team-card-body">
+                        <h4 class="team-name">YBTsa</h4>
+                        <p class="team-role" data-i18n="team_role_assist">协助管理</p>
+                    </div>
+                </article>
+            </div>
+            <div class="team-footnote">
+                <a href="javascript:void(0)" id="moderator-rules-link" class="team-rules-link"><i class="fas fa-book"></i><span data-i18n="team_mod_rules">协管守则</span></a>
+            </div>
         </div>
     </div>
-		</section>
+</section>
 
-		<!-- ====== 社交媒体 · B站视频 ====== -->
-		<section id="social" class="py-20 bg-gradient-to-b from-white to-gray-50">
-		    <div class="max-w-7xl mx-auto px-4">
-		        <h2 class="text-4xl font-bold text-center mb-4" data-i18n="social_title">社交媒体</h2>
-		        <p class="text-gray-500 text-center mb-12" data-i18n="social_subtitle">在B站观看4U4N服务器精彩视频</p>
-		        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-		            <div class="social-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-		                <div class="relative pt-[56.25%] bg-black">
-		                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1sVuRzvEoJ&page=1&high_quality=1&autoplay=0" class="absolute inset-0 w-full h-full" scrolling="no" border="0" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"></iframe>
-		                </div>
-		                <div class="p-4">
-		                    <h3 class="font-bold text-gray-800 mb-2 line-clamp-2" data-i18n="social_video1_title">4U4N 服务器宣传片</h3>
-		                    <a href="https://www.bilibili.com/video/BV1sVuRzvEoJ/" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors">
-		                        <i class="fab fa-bilibili"></i> <span data-i18n="social_watch_bilibili">在B站观看</span> <i class="fas fa-external-link-alt text-xs"></i>
-		                    </a>
-		                </div>
-		            </div>
-		            <div class="social-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-		                <div class="relative pt-[56.25%] bg-black">
-		                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1ZuZMBhEXt&page=1&high_quality=1&autoplay=0" class="absolute inset-0 w-full h-full" scrolling="no" border="0" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"></iframe>
-		                </div>
-		                <div class="p-4">
-		                    <h3 class="font-bold text-gray-800 mb-2 line-clamp-2" data-i18n="social_video2_title">4U4N新年宣传</h3>
-		                    <a href="https://www.bilibili.com/video/BV1ZuZMBhEXt/" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors">
-		                        <i class="fab fa-bilibili"></i> <span data-i18n="social_watch_bilibili">在B站观看</span> <i class="fas fa-external-link-alt text-xs"></i>
-		                    </a>
-		                </div>
-		            </div>
-		            <div class="social-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-		                <div class="relative pt-[56.25%] bg-black">
-		                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1uQ7Q63EuS&page=1&high_quality=1&autoplay=0" class="absolute inset-0 w-full h-full" scrolling="no" border="0" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"></iframe>
-		                </div>
-		                <div class="p-4">
-		                    <h3 class="font-bold text-gray-800 mb-2 line-clamp-2" data-i18n="social_video3_title">4U4N特色起床宣传</h3>
-		                    <a href="https://www.bilibili.com/video/BV1uQ7Q63EuS/" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors">
-		                        <i class="fab fa-bilibili"></i> <span data-i18n="social_watch_bilibili">在B站观看</span> <i class="fas fa-external-link-alt text-xs"></i>
-		                    </a>
-		                </div>
-		            </div>
-		        </div>
-		        <div class="text-center mt-8">
-		            <a href="https://space.bilibili.com/371099211/upload/video" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl active:scale-[0.98]">
-		                <i class="fab fa-bilibili text-lg"></i> <span data-i18n="social_follow_btn">关注我们的B站账号</span> <i class="fas fa-arrow-right ml-1"></i>
-		            </a>
-		        </div>
-		    </div>
-		</section>
+<!-- ====== 社交媒体 · B站视频 ====== -->
+<section id="social" class="py-20 bg-gradient-to-b from-white to-gray-50">
+    <div class="max-w-7xl mx-auto px-4">
+        <h2 class="text-4xl font-bold text-center mb-4" data-i18n="social_title">社交媒体</h2>
+        <p class="text-gray-500 text-center mb-12" data-i18n="social_subtitle">在B站观看4U4N服务器精彩视频</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="social-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="relative pt-[56.25%] bg-black">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1sVuRzvEoJ&page=1&high_quality=1&autoplay=0" class="absolute inset-0 w-full h-full" scrolling="no" border="0" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"></iframe>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-800 mb-2 line-clamp-2" data-i18n="social_video1_title">4U4N 服务器宣传片</h3>
+                    <a href="https://www.bilibili.com/video/BV1sVuRzvEoJ/" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors">
+                        <i class="fab fa-bilibili"></i> <span data-i18n="social_watch_bilibili">在B站观看</span> <i class="fas fa-external-link-alt text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="social-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="relative pt-[56.25%] bg-black">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1ZuZMBhEXt&page=1&high_quality=1&autoplay=0" class="absolute inset-0 w-full h-full" scrolling="no" border="0" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"></iframe>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-800 mb-2 line-clamp-2" data-i18n="social_video2_title">4U4N新年宣传</h3>
+                    <a href="https://www.bilibili.com/video/BV1ZuZMBhEXt/" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors">
+                        <i class="fab fa-bilibili"></i> <span data-i18n="social_watch_bilibili">在B站观看</span> <i class="fas fa-external-link-alt text-xs"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="social-card bg-white rounded-xl shadow-md overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <div class="relative pt-[56.25%] bg-black">
+                    <iframe src="https://player.bilibili.com/player.html?bvid=BV1uQ7Q63EuS&page=1&high_quality=1&autoplay=0" class="absolute inset-0 w-full h-full" scrolling="no" border="0" frameborder="0" allowfullscreen loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-presentation"></iframe>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-bold text-gray-800 mb-2 line-clamp-2" data-i18n="social_video3_title">4U4N特色起床宣传</h3>
+                    <a href="https://www.bilibili.com/video/BV1uQ7Q63EuS/" target="_blank" rel="noopener" class="inline-flex items-center gap-1 text-sm text-pink-500 hover:text-pink-600 font-medium transition-colors">
+                        <i class="fab fa-bilibili"></i> <span data-i18n="social_watch_bilibili">在B站观看</span> <i class="fas fa-external-link-alt text-xs"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-8">
+            <a href="https://space.bilibili.com/371099211/upload/video" target="_blank" rel="noopener" class="inline-flex items-center gap-2 px-6 py-3 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-full transition-all shadow-lg hover:shadow-xl active:scale-[0.98]">
+                <i class="fab fa-bilibili text-lg"></i> <span data-i18n="social_follow_btn">关注我们的B站账号</span> <i class="fas fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+    </div>
+</section>
 
-		<!-- ====== FAQ ====== -->
+<!-- ====== FAQ ====== -->
 <section id="faq" class="py-20">
     <div class="max-w-7xl mx-auto px-4">
         <h2 class="text-4xl font-bold text-center mb-16" data-i18n="faq_title">常见问题</h2>
@@ -495,9 +585,9 @@
             <details class="faq-item"><summary class="faq-question" data-i18n="faq_q4">我进不去服务器或者延迟高咋办？</summary><p class="faq-answer" data-i18n="faq_a4" data-i18n-type="html">1.请检查您的网络链接是否正常<br>2.是否安装非法Mod(包括可以大量发送数据包的客户端)<br>3.服务器已经不支持1.21-的版本，如果要获取最佳体验，请使用最新版客户端<br>4.如果依然无法解决，请向管理和服主适当求助</p></details>
         </div>
     </div>
-	</section>
+</section>
 
-	<!-- ====== 页脚 ====== -->
+<!-- ====== 页脚 ====== -->
 <footer class="bg-gray-900 text-white py-12">
     <div class="max-w-7xl mx-auto px-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
@@ -612,14 +702,14 @@
     </div>
 </div>
 
-	<!-- ====== QQ群弹窗 ====== -->
-	<div id="qq-group-modal" class="modal-mask">
-	    <div class="modal-content max-w-lg text-center">
-	        <div class="flex justify-between items-start mb-4">
-	            <h3 class="text-2xl font-bold" data-i18n="qq_title">加入官方QQ群</h3>
-	            <button class="modal-close-btn text-gray-500 hover:text-gray-700" data-modal="qq-group-modal"><i class="fas fa-times text-xl"></i></button>
-	        </div>
-	        <p class="mb-6 text-gray-600" data-i18n="qq_desc">扫码加入QQ群，获取更多服务器资讯</p>
+<!-- ====== QQ群弹窗 ====== -->
+<div id="qq-group-modal" class="modal-mask">
+    <div class="modal-content max-w-lg text-center">
+        <div class="flex justify-between items-start mb-4">
+            <h3 class="text-2xl font-bold" data-i18n="qq_title">加入官方QQ群</h3>
+            <button class="modal-close-btn text-gray-500 hover:text-gray-700" data-modal="qq-group-modal"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <p class="mb-6 text-gray-600" data-i18n="qq_desc">扫码加入QQ群，获取更多服务器资讯</p>
         <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
             <div class="flex flex-col items-center"><img src="./img/twoord.png" alt="一群二维码" class="w-40 h-40 rounded-lg shadow-md" loading="lazy"><p class="mt-3 text-gray-500 text-sm font-medium">一群：758633338</p></div>
             <div class="flex flex-col items-center"><img src="./img/groupshows.png" alt="二群二维码" class="w-40 h-40 rounded-lg shadow-md" loading="lazy"><p class="mt-3 text-gray-500 text-sm font-medium">二群：1104679773</p></div>
@@ -630,35 +720,35 @@
 <!-- ====== 实用工具弹窗 ====== -->
 <div id="utility-modal" class="modal-mask">
     <div class="modal-content max-w-4xl max-h-[90vh] overflow-y-auto">
-	        <div class="flex justify-between items-center mb-6">
-	            <h3 class="text-2xl font-bold" data-i18n="util_title">服务器实用工具</h3>
-	            <button class="modal-close-btn text-gray-500 hover:text-gray-700" data-modal="utility-modal"><i class="fas fa-times text-xl"></i></button>
-	        </div>
-	        <div class="border-b border-gray-200 mb-6">
-	            <div class="flex space-x-8">
-	                <button class="utility-tab py-2 border-b-2 border-primary text-primary font-medium" data-tab="gradient-text" data-i18n="util_tab1">渐变文字生成</button>
-	                <button class="utility-tab py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="special-chars" data-i18n="util_tab2">特殊符号</button>
-	                <button class="utility-tab py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="slime-chunk" data-i18n="util_tab3">史莱姆区块查询</button>
-	                <button class="utility-tab py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="biome-chunk" data-i18n="util_tab4">生物群落查询</button>
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" data-i18n="util_title">服务器实用工具</h3>
+            <button class="modal-close-btn text-gray-500 hover:text-gray-700" data-modal="utility-modal"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div class="border-b border-gray-200 mb-6">
+            <div class="utility-tabs">
+                <button class="utility-tab py-2 border-b-2 border-primary text-primary font-medium" data-tab="gradient-text" data-i18n="util_tab1">渐变文字生成</button>
+                <button class="utility-tab py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="special-chars" data-i18n="util_tab2">特殊符号</button>
+                <button class="utility-tab py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="slime-chunk" data-i18n="util_tab3">史莱姆区块查询</button>
+                <button class="utility-tab py-2 border-b-2 border-transparent text-gray-500 hover:text-gray-700" data-tab="biome-chunk" data-i18n="util_tab4">生物群落查询</button>
             </div>
         </div>
-	        <div class="utility-content" id="gradient-text-content">
-	            <div class="mb-4"><label for="gradient-input" class="block text-gray-700 mb-2" data-i18n="gradient_label_in">输入文字:</label><input type="text" id="gradient-input" class="w-full p-2 border border-gray-300 rounded" data-i18n="gradient_placeholder" data-i18n-type="placeholder" placeholder="输入要转换的文字"></div>
-	            <div class="mb-4"><span class="block text-gray-700 mb-2" data-i18n="gradient_symbol_type">颜色符号类型:</span><div class="flex flex-wrap gap-4"><label class="inline-flex items-center"><input type="radio" name="color-symbol" value="section" checked class="mr-2"> <span data-i18n="gradient_section">§ 段落符号</span></label><label class="inline-flex items-center"><input type="radio" name="color-symbol" value="ampersand" class="mr-2"> <span data-i18n="gradient_ampersand">& 与号</span></label></div></div>
-	            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-	                <div><label for="start-color" class="block text-gray-700 mb-2" data-i18n="gradient_start">起始颜色:</label><div class="flex"><input type="text" id="start-color" class="w-full p-2 border border-gray-300 rounded-l" value="#ff0000"><div id="start-color-swatch" class="color-swatch" style="background-color:#ff0000"></div></div></div>
-	                <div><label for="end-color" class="block text-gray-700 mb-2" data-i18n="gradient_end">结束颜色:</label><div class="flex"><input type="text" id="end-color" class="w-full p-2 border border-gray-300 rounded-l" value="#00ff00"><div id="end-color-swatch" class="color-swatch" style="background-color:#00ff00"></div></div></div>
-	            </div>
-	            <div class="mb-4"><p class="text-gray-700 mb-2" data-i18n="gradient_presets">预设颜色块:</p><div id="color-palette" class="flex flex-wrap gap-2 p-2 border border-gray-200 rounded"></div></div>
-	            <div class="mb-6"><p class="text-gray-700 mb-2" data-i18n="gradient_picker">点击或拖动选择颜色:</p><div id="color-gradient" class="relative w-full h-40 rounded-md overflow-hidden border border-gray-200 cursor-pointer"></div></div>
-	            <div class="mb-4"><span class="block text-gray-700 mb-2" data-i18n="gradient_format">文字格式:</span><div class="flex flex-wrap gap-3"><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="bold" class="mr-1"> <span data-i18n="gradient_bold">粗体</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="italic" class="mr-1"> <span data-i18n="gradient_italic">斜体</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="underline" class="mr-1"> <span data-i18n="gradient_underline">下划线</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="strikethrough" class="mr-1"> <span data-i18n="gradient_strike">删除线</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="obfuscated" class="mr-1"> <span data-i18n="gradient_obfuscate">乱码</span></label></div></div>
-	            <button id="generate-gradient" class="bg-gradient-to-r from-cyan-400 to-teal-500 text-white px-4 py-2 rounded mb-4 hover:opacity-90 transition-opacity" data-i18n="gradient_gen_btn">生成渐变文字</button>
-	            <div class="mb-4"><label class="block text-gray-700 mb-2" data-i18n="gradient_result">结果:</label><div id="gradient-result" class="p-3 bg-gray-100 rounded min-h-[40px] overflow-auto break-all"></div></div>
-	            <button id="copy-gradient" class="bg-primary text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-opacity" disabled data-i18n="gradient_copy_btn">复制到剪贴板</button>
-	            <div class="mt-4 p-4 bg-gray-50 rounded"><p class="text-gray-700 mb-2" data-i18n="gradient_preview">预览效果:</p><div id="text-preview" class="text-2xl font-bold" data-i18n="gradient_preview_text">渐变文字预览</div></div>
-	        </div>
-	        <div class="utility-content hidden" id="special-chars-content">
-	            <p class="text-gray-600 mb-4" data-i18n="symbols_desc">点击符号即可复制到剪贴板：</p>
+        <div class="utility-content" id="gradient-text-content">
+            <div class="mb-4"><label for="gradient-input" class="block text-gray-700 mb-2" data-i18n="gradient_label_in">输入文字:</label><input type="text" id="gradient-input" class="w-full p-2 border border-gray-300 rounded" data-i18n="gradient_placeholder" data-i18n-type="placeholder" placeholder="输入要转换的文字"></div>
+            <div class="mb-4"><span class="block text-gray-700 mb-2" data-i18n="gradient_symbol_type">颜色符号类型:</span><div class="flex flex-wrap gap-4"><label class="inline-flex items-center"><input type="radio" name="color-symbol" value="section" checked class="mr-2"> <span data-i18n="gradient_section">§ 段落符号</span></label><label class="inline-flex items-center"><input type="radio" name="color-symbol" value="ampersand" class="mr-2"> <span data-i18n="gradient_ampersand">& 与号</span></label></div></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div><label for="start-color" class="block text-gray-700 mb-2" data-i18n="gradient_start">起始颜色:</label><div class="flex"><input type="text" id="start-color" class="w-full p-2 border border-gray-300 rounded-l" value="#ff0000"><div id="start-color-swatch" class="color-swatch" style="background-color:#ff0000"></div></div></div>
+                <div><label for="end-color" class="block text-gray-700 mb-2" data-i18n="gradient_end">结束颜色:</label><div class="flex"><input type="text" id="end-color" class="w-full p-2 border border-gray-300 rounded-l" value="#00ff00"><div id="end-color-swatch" class="color-swatch" style="background-color:#00ff00"></div></div></div>
+            </div>
+            <div class="mb-4"><p class="text-gray-700 mb-2" data-i18n="gradient_presets">预设颜色块:</p><div id="color-palette" class="flex flex-wrap gap-2 p-2 border border-gray-200 rounded"></div></div>
+            <div class="mb-6"><p class="text-gray-700 mb-2" data-i18n="gradient_picker">点击或拖动选择颜色:</p><div id="color-gradient" class="relative w-full h-40 rounded-md overflow-hidden border border-gray-200 cursor-pointer"></div></div>
+            <div class="mb-4"><span class="block text-gray-700 mb-2" data-i18n="gradient_format">文字格式:</span><div class="flex flex-wrap gap-3"><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="bold" class="mr-1"> <span data-i18n="gradient_bold">粗体</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="italic" class="mr-1"> <span data-i18n="gradient_italic">斜体</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="underline" class="mr-1"> <span data-i18n="gradient_underline">下划线</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="strikethrough" class="mr-1"> <span data-i18n="gradient_strike">删除线</span></label><label class="inline-flex items-center"><input type="checkbox" name="text-format" value="obfuscated" class="mr-1"> <span data-i18n="gradient_obfuscate">乱码</span></label></div></div>
+            <button id="generate-gradient" class="bg-gradient-to-r from-cyan-400 to-teal-500 text-white px-4 py-2 rounded mb-4 hover:opacity-90 transition-opacity" data-i18n="gradient_gen_btn">生成渐变文字</button>
+            <div class="mb-4"><label class="block text-gray-700 mb-2" data-i18n="gradient_result">结果:</label><div id="gradient-result" class="p-3 bg-gray-100 rounded min-h-[40px] overflow-auto break-all"></div></div>
+            <button id="copy-gradient" class="bg-primary text-white px-4 py-2 rounded disabled:opacity-50 disabled:cursor-not-allowed transition-opacity" disabled data-i18n="gradient_copy_btn">复制到剪贴板</button>
+            <div class="mt-4 p-4 bg-gray-50 rounded"><p class="text-gray-700 mb-2" data-i18n="gradient_preview">预览效果:</p><div id="text-preview" class="text-2xl font-bold" data-i18n="gradient_preview_text">渐变文字预览</div></div>
+        </div>
+        <div class="utility-content hidden" id="special-chars-content">
+            <p class="text-gray-600 mb-4" data-i18n="symbols_desc">点击符号即可复制到剪贴板：</p>
             <div class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
                 <button class="char-btn">§</button><button class="char-btn">✦</button><button class="char-btn">✧</button><button class="char-btn">✪</button>
                 <button class="char-btn">★</button><button class="char-btn">☆</button><button class="char-btn">♦</button><button class="char-btn">♣</button>
@@ -668,77 +758,67 @@
         </div>
         <!-- 史莱姆区块查询 -->
         <div class="utility-content hidden" id="slime-chunk-content">
-	            <div class="mb-4">
-	                <label for="slime-seed" class="block text-gray-700 mb-2 font-medium" data-i18n="slime_seed_label">种子</label>
-	                <input type="text" id="slime-seed" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all font-mono" value="-4925878461228879996">
-	            </div>
-	            <div class="grid grid-cols-3 gap-3 mb-2">
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_start_x">起始 X</label>
-	                    <label for="slime-start-x"></label><input type="number" id="slime-start-x" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="-8">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_start_y">起始 Y</label>
-	                    <label for="slime-start-y"></label><input type="number" id="slime-start-y" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="40">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_start_z">起始 Z</label>
-	                    <label for="slime-start-z"></label><input type="number" id="slime-start-z" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="-8">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_end_x">结束 X</label>
-	                    <label for="slime-end-x"></label><input type="number" id="slime-end-x" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="8">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_end_y">结束 Y</label>
-	                    <label for="slime-end-y"></label><input type="number" id="slime-end-y" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="40">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_end_z">结束 Z</label>
-	                    <label for="slime-end-z"></label><input type="number" id="slime-end-z" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="8">
-	                </div>
-	            </div>
-	            <p class="text-xs text-gray-400 mb-3" data-i18n="slime_y_note"><i class="fas fa-info-circle mr-1"></i>史莱姆区块与 Y 高度无关，此处 Y 仅用于坐标完整性</p>
-	            <button id="slime-query-btn" class="px-5 py-2 rounded-lg font-medium text-white bg-gradient-to-r from-cyan-400 to-teal-500 hover:from-cyan-500 hover:to-teal-600 transition-all active:scale-[0.98] shadow-sm mb-4" data-i18n="slime_query_btn">
-	                <i class="fas fa-search mr-1"></i>查询史莱姆区块
-	            </button>
+            <div class="mb-4">
+                <label for="slime-seed" class="block text-gray-700 mb-2 font-medium" data-i18n="slime_seed_label">种子</label>
+                <input type="text" id="slime-seed" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all font-mono" value="-4925878461228879996">
+            </div>
+            <div class="grid grid-cols-3 gap-3 mb-2">
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_start_x" for="slime-start-x">起始 X</label><input type="number" id="slime-start-x" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="-8">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_start_y" for="slime-start-y">起始 Y</label><input type="number" id="slime-start-y" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="40">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_start_z" for="slime-start-z">起始 Z</label><input type="number" id="slime-start-z" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="-8">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_end_x" for="slime-end-x">结束 X</label><input type="number" id="slime-end-x" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="8">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_end_y" for="slime-end-y">结束 Y</label><input type="number" id="slime-end-y" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="40">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="slime_end_z" for="slime-end-z">结束 Z</label><input type="number" id="slime-end-z" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="8">
+                </div>
+            </div>
+            <p class="text-xs text-gray-400 mb-3" data-i18n="slime_y_note"><i class="fas fa-info-circle mr-1"></i>史莱姆区块与 Y 高度无关，此处 Y 仅用于坐标完整性</p>
+            <button id="slime-query-btn" class="px-5 py-2 rounded-lg font-medium text-white bg-gradient-to-r from-cyan-400 to-teal-500 hover:from-cyan-500 hover:to-teal-600 transition-all active:scale-[0.98] shadow-sm mb-4" data-i18n="slime_query_btn">
+                <i class="fas fa-search mr-1"></i>查询史莱姆区块
+            </button>
             <div id="slime-map-wrapper" class="bg-gray-50 rounded-lg border border-gray-200 p-3 overflow-auto" style="max-height:480px;">
-	                <div id="slime-loading" class="flex items-center justify-center py-16 text-gray-400">
-	                    <i class="fas fa-spinner fa-spin text-2xl mr-3"></i>
-	                    <span class="text-lg" data-i18n="slime_loading_text">点击查询按钮生成区块地图</span>
-	                </div>
+                <div id="slime-loading" class="flex items-center justify-center py-16 text-gray-400">
+                    <i class="fas fa-spinner fa-spin text-2xl mr-3"></i>
+                    <span class="text-lg" data-i18n="slime_loading_text">点击查询按钮生成区块地图</span>
+                </div>
                 <div id="slime-grid" class="hidden" style="display:none;"></div>
             </div>
-	            <div class="mt-3 flex flex-wrap items-center gap-4 text-xs text-gray-400">
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-emerald-400 align-middle mr-1"></span> <span data-i18n="slime_chunk_label">史莱姆区块</span></span>
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-gray-300 border border-gray-400 align-middle mr-1"></span> <span data-i18n="slime_normal_label">普通区块</span></span>
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-amber-200 border border-amber-500 align-middle mr-1"></span> <span data-i18n="slime_center_label">中心 (0,0)</span></span>
+            <div class="mt-3 flex flex-wrap items-center gap-4 text-xs text-gray-400">
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-emerald-400 align-middle mr-1"></span> <span data-i18n="slime_chunk_label">史莱姆区块</span></span>
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-gray-300 border border-gray-400 align-middle mr-1"></span> <span data-i18n="slime_normal_label">普通区块</span></span>
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-amber-200 border border-amber-500 align-middle mr-1"></span> <span data-i18n="slime_center_label">中心 (0,0)</span></span>
                 <span id="slime-stats" class="text-gray-400"></span>
             </div>
         </div>
         <!-- 生物群落查询 -->
-	        <div class="utility-content hidden" id="biome-chunk-content">
-	            <div class="mb-4">
-	                <label for="biome-seed" class="block text-gray-700 mb-2 font-medium" data-i18n="biome_seed_label">世界种子</label>
-	                <input type="text" id="biome-seed" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all font-mono" value="-4925878461228879996">
-	            </div>
-	            <div class="grid grid-cols-3 gap-3 mb-4">
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="biome_pos_x">你的 X</label>
-	                    <label for="biome-pos-x"></label><input type="number" id="biome-pos-x" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="0">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="biome_pos_y">你的 Y</label>
-	                    <label for="biome-pos-y"></label><input type="number" id="biome-pos-y" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="64">
-	                </div>
-	                <div>
-	                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="biome_pos_z">你的 Z</label>
-	                    <label for="biome-pos-z"></label><input type="number" id="biome-pos-z" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="0">
-	                </div>
-	            </div>
-	            <div class="mb-4">
-	                <label class="block text-gray-700 mb-1 text-sm font-medium" data-i18n="biome_radius_label">搜索半径（区块）</label>
-                <label for="biome-radius"></label><input type="range" id="biome-radius" min="3" max="12" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer
+        <div class="utility-content hidden" id="biome-chunk-content">
+            <div class="mb-4">
+                <label for="biome-seed" class="block text-gray-700 mb-2 font-medium" data-i18n="biome_seed_label">世界种子</label>
+                <input type="text" id="biome-seed" class="w-full p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all font-mono" value="-4925878461228879996">
+            </div>
+            <div class="grid grid-cols-3 gap-3 mb-4">
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="biome_pos_x" for="biome-pos-x">你的 X</label><input type="number" id="biome-pos-x" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="0">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="biome_pos_y" for="biome-pos-y">你的 Y</label><input type="number" id="biome-pos-y" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="64">
+                </div>
+                <div>
+                    <label class="block text-gray-700 mb-1 text-xs font-medium" data-i18n="biome_pos_z" for="biome-pos-z">你的 Z</label><input type="number" id="biome-pos-z" class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" value="0">
+                </div>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 mb-1 text-sm font-medium" data-i18n="biome_radius_label" for="biome-radius">搜索半径（区块）</label><input type="range" id="biome-radius" min="3" max="12" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer
                        [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-5 [&::-webkit-slider-thumb]:h-5
                        [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-purple-500 [&::-webkit-slider-thumb]:cursor-pointer">
                 <div class="flex justify-between text-xs text-gray-400 mt-1">
@@ -747,46 +827,45 @@
                     <span>12</span>
                 </div>
             </div>
-	            <div class="flex items-center gap-3 mb-3">
-	                <label class="block text-gray-700 text-sm font-medium" data-i18n="biome_target_label">搜索目标群落：</label>
-	                <label for="biome-target"></label><select id="biome-target" class="p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
-	                    <option value="plains" data-i18n="biome_name_plains">平原</option>
-	                    <option value="forest" data-i18n="biome_name_forest">森林</option>
-	                    <option value="taiga" data-i18n="biome_name_taiga">针叶林</option>
-	                    <option value="desert" data-i18n="biome_name_desert">沙漠</option>
-	                    <option value="savanna" data-i18n="biome_name_savanna">热带草原</option>
-	                    <option value="jungle" data-i18n="biome_name_jungle">丛林</option>
-	                    <option value="swamp" data-i18n="biome_name_swamp">沼泽</option>
-	                    <option value="badlands" data-i18n="biome_name_badlands">恶地</option>
-	                    <option value="dark_forest" selected data-i18n="biome_name_dark_forest">黑森林</option>
-	                    <option value="snowy_taiga" data-i18n="biome_name_snowy_taiga">积雪针叶林</option>
-	                    <option value="ice_spikes" data-i18n="biome_name_ice_spikes">冰刺平原</option>
-	                    <option value="mushroom_fields" data-i18n="biome_name_mushroom_fields">蘑菇岛</option>
-	                    <option value="cherry_grove" data-i18n="biome_name_cherry_grove">樱花树林</option>
-	                    <option value="mangrove_swamp" data-i18n="biome_name_mangrove_swamp">红树林沼泽</option>
-	                    <option value="meadow" data-i18n="biome_name_meadow">草甸</option>
-	                    <option value="ocean" data-i18n="biome_name_ocean">海洋</option>
+            <div class="flex items-center gap-3 mb-3">
+                <label class="block text-gray-700 text-sm font-medium" data-i18n="biome_target_label" for="biome-target">搜索目标群落：</label><select id="biome-target" class="p-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-purple-400 focus:border-transparent outline-none">
+                    <option value="plains" data-i18n="biome_name_plains">平原</option>
+                    <option value="forest" data-i18n="biome_name_forest">森林</option>
+                    <option value="taiga" data-i18n="biome_name_taiga">针叶林</option>
+                    <option value="desert" data-i18n="biome_name_desert">沙漠</option>
+                    <option value="savanna" data-i18n="biome_name_savanna">热带草原</option>
+                    <option value="jungle" data-i18n="biome_name_jungle">丛林</option>
+                    <option value="swamp" data-i18n="biome_name_swamp">沼泽</option>
+                    <option value="badlands" data-i18n="biome_name_badlands">恶地</option>
+                    <option value="dark_forest" selected data-i18n="biome_name_dark_forest">黑森林</option>
+                    <option value="snowy_taiga" data-i18n="biome_name_snowy_taiga">积雪针叶林</option>
+                    <option value="ice_spikes" data-i18n="biome_name_ice_spikes">冰刺平原</option>
+                    <option value="mushroom_fields" data-i18n="biome_name_mushroom_fields">蘑菇岛</option>
+                    <option value="cherry_grove" data-i18n="biome_name_cherry_grove">樱花树林</option>
+                    <option value="mangrove_swamp" data-i18n="biome_name_mangrove_swamp">红树林沼泽</option>
+                    <option value="meadow" data-i18n="biome_name_meadow">草甸</option>
+                    <option value="ocean" data-i18n="biome_name_ocean">海洋</option>
                 </select>
             </div>
-	            <button id="biome-query-btn" class="px-5 py-2 rounded-lg font-medium text-white bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 transition-all active:scale-[0.98] shadow-sm mb-4" data-i18n="biome_query_btn">
-	                <i class="fas fa-search mr-1"></i>查询最近群落
-	            </button>
-	            <div id="biome-map-wrapper" class="bg-gray-50 rounded-lg border border-gray-200 p-3 overflow-auto" style="max-height:420px;">
-	                <div id="biome-loading" class="flex items-center justify-center py-16 text-gray-400">
-	                    <i class="fas fa-spinner fa-spin text-2xl mr-3"></i>
-	                    <span class="text-lg" data-i18n="biome_loading_text">点击查询生成群落地图</span>
-	                </div>
+            <button id="biome-query-btn" class="px-5 py-2 rounded-lg font-medium text-white bg-gradient-to-r from-purple-400 to-pink-500 hover:from-purple-500 hover:to-pink-600 transition-all active:scale-[0.98] shadow-sm mb-4" data-i18n="biome_query_btn">
+                <i class="fas fa-search mr-1"></i>查询最近群落
+            </button>
+            <div id="biome-map-wrapper" class="bg-gray-50 rounded-lg border border-gray-200 p-3 overflow-auto" style="max-height:420px;">
+                <div id="biome-loading" class="flex items-center justify-center py-16 text-gray-400">
+                    <i class="fas fa-spinner fa-spin text-2xl mr-3"></i>
+                    <span class="text-lg" data-i18n="biome_loading_text">点击查询生成群落地图</span>
+                </div>
                 <div id="biome-grid" class="hidden" style="display:none;"></div>
             </div>
             <div id="biome-result" class="mt-3 p-3 bg-purple-50 border border-purple-200 rounded-lg hidden">
                 <p class="text-sm text-purple-700" id="biome-result-text"></p>
             </div>
-	            <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-gray-400">
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-green-400 align-middle mr-1" style="background:#7cb342;"></span> <span data-i18n="biome_name_forest">森林</span></span>
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-yellow-400 align-middle mr-1" style="background:#fdd835;"></span> <span data-i18n="biome_name_desert">沙漠</span></span>
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-blue-400 align-middle mr-1" style="background:#42a5f5;"></span> <span data-i18n="biome_name_ocean">海洋</span></span>
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-gray-300 align-middle mr-1" style="background:#9e9e9e;"></span> <span data-i18n="biome_mountains">山地</span></span>
-	                <span><span class="inline-block w-4 h-4 rounded-sm bg-red-400 align-middle mr-1" style="background:#ef5350;"></span> <span data-i18n="biome_name_badlands">恶地</span></span>
+            <div class="mt-3 flex flex-wrap items-center gap-3 text-xs text-gray-400">
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-green-400 align-middle mr-1" style="background:#7cb342;"></span> <span data-i18n="biome_name_forest">森林</span></span>
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-yellow-400 align-middle mr-1" style="background:#fdd835;"></span> <span data-i18n="biome_name_desert">沙漠</span></span>
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-blue-400 align-middle mr-1" style="background:#42a5f5;"></span> <span data-i18n="biome_name_ocean">海洋</span></span>
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-gray-300 align-middle mr-1" style="background:#9e9e9e;"></span> <span data-i18n="biome_mountains">山地</span></span>
+                <span><span class="inline-block w-4 h-4 rounded-sm bg-red-400 align-middle mr-1" style="background:#ef5350;"></span> <span data-i18n="biome_name_badlands">恶地</span></span>
                 <span><span class="inline-block w-4 h-4 rounded-sm bg-purple-400 align-middle mr-1" style="background:#ab47bc;"></span> 蘑菇岛</span>
                 <span id="biome-stats" class="text-gray-400"></span>
             </div>
@@ -804,17 +883,17 @@
 </div>
 
 <!-- ====== 等级指南弹窗 ====== -->
-	<div id="level-guide-modal" class="modal-mask">
-	    <div class="modal-content max-w-4xl max-h-[90vh] overflow-y-auto">
-	        <div class="flex justify-between items-center mb-6">
-	            <h3 class="text-2xl font-bold" data-i18n="level_title">等级指南 (McMMO)</h3>
-	            <button class="modal-close-btn text-gray-500 hover:text-gray-700" data-modal="level-guide-modal"><i class="fas fa-times text-xl"></i></button>
-	        </div>
-	        <div id="mcmmo-content" class="prose max-w-none">
-	            <div class="flex items-center justify-center py-10"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><span class="ml-2 text-gray-600" data-i18n="level_loading">加载内容中...</span></div>
-	        </div>
-	        <div class="mt-8 pt-4 border-t border-gray-200 flex items-center text-gray-600 text-sm">
-	            <i class="fab fa-github text-2xl mr-2"></i><span data-i18n="level_source">内容来源: </span><a href="https://github.com/xiaopentp/zhbwiki/blob/main/plugins/mcmmo-commands.md" target="_blank" class="text-blue-500 hover:underline">GitHub</a>
+<div id="level-guide-modal" class="modal-mask">
+    <div class="modal-content max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-2xl font-bold" data-i18n="level_title">等级指南 (McMMO)</h3>
+            <button class="modal-close-btn text-gray-500 hover:text-gray-700" data-modal="level-guide-modal"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div id="mcmmo-content" class="prose max-w-none">
+            <div class="flex items-center justify-center py-10"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><span class="ml-2 text-gray-600" data-i18n="level_loading">加载内容中...</span></div>
+        </div>
+        <div class="mt-8 pt-4 border-t border-gray-200 flex items-center text-gray-600 text-sm">
+            <i class="fab fa-github text-2xl mr-2"></i><span data-i18n="level_source">内容来源: </span><a href="https://github.com/xiaopentp/zhbwiki/blob/main/plugins/mcmmo-commands.md" target="_blank" class="text-blue-500 hover:underline">GitHub</a>
         </div>
     </div>
 </div>
@@ -851,10 +930,8 @@
                 <button class="auth-tab flex-1 py-2 text-center rounded-lg font-bold text-sm transition-all text-gray-500" data-tab="register" id="auth-tab-register" data-i18n="auth_tab_register">注册</button>
             </div>
             <div class="auth-form" id="auth-form-login">
-                <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="auth_username">用户名</label><label
-                        for="login-username"></label><input type="text" id="login-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" placeholder="输入你的游戏ID"></div>
-                <div class="mb-2"><label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="auth_password">密码</label><label
-                        for="login-password"></label><input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" placeholder="请输入密码"></div>
+                <div class="mb-4"><label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="auth_username" for="login-username">用户名</label><input type="text" id="login-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" placeholder="输入你的游戏ID"></div>
+                <div class="mb-2"><label class="block text-sm font-medium text-gray-700 mb-1" data-i18n="auth_password" for="login-password">密码</label><input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cyan-400 focus:border-transparent outline-none transition-all" placeholder="请输入密码"></div>
                 <div class="flex justify-end mb-4"><button id="forgot-password" class="text-xs text-gray-400 hover:text-primary transition-colors" data-i18n="auth_forgot">忘记密码？</button></div>
                 <!-- 同意服务条款 -->
                 <label class="flex items-start gap-2 mb-4 cursor-pointer select-none" id="terms-agree-wrap">
@@ -888,7 +965,7 @@
     </div>
 </div>
 
-<!-- ====== 服务条款（独立页 terms.html，登录弹窗内及页脚均跳转至该页） ====== -->
+<!-- 服务条款位于 docs.html#terms，登录弹窗与页脚均跳转该处 -->
 
 <!-- ====== 协管守则弹窗 ====== -->
 <div id="moderator-rules-modal" class="fixed inset-0 bg-black/70 z-50 flex items-center justify-center opacity-0 invisible transition-all duration-300">
@@ -904,15 +981,8 @@
         <div class="px-6 py-4 border-t border-gray-100 flex justify-end flex-shrink-0 bg-gray-50">
             <button id="close-moderator-btn" class="px-5 py-2 rounded-lg font-medium text-white bg-gradient-to-r from-blue-400 to-purple-500 hover:from-blue-500 hover:to-purple-600 transition-all active:scale-[0.98]"><i class="fas fa-check mr-1"></i>我知道了</button>
         </div>
-	</div>
 </div>
-
-<!-- 设置功能暂停开发 -->
-<!--
-<div id="settings-modal" ...>
-  ...
 </div>
--->
 
 <!-- 在线人数趋势弹框 -->
 <div id="player-chart-popup" style="display:none;position:fixed;z-index:99;width:320px;background:#1e293b;color:#f1f5f9;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.5);padding:12px;border:1px solid #334155;">
@@ -925,5 +995,3 @@
 
 </body>
 </html>
-
-

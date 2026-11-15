@@ -43,9 +43,11 @@
 
         // ====== 折线图 ======
         function renderChart() {
+            // Chart.js 由 CDN 引入，加载失败时静默降级，不阻断在线人数更新
+            if (typeof Chart === 'undefined') return;
             if (chartInst) { chartInst.destroy(); chartInst = null; }
             var d = loadHistory();
-            note.textContent = d.length + ' 个采样点 · 0-100 人区间';
+            if (note) note.textContent = d.length + ' 个采样点 · 0-100 人区间';
             var ctx = canvas.getContext('2d');
             var g = ctx.createLinearGradient(0,0,0,180);
             g.addColorStop(0,'rgba(6,182,212,0.35)'); g.addColorStop(1,'rgba(6,182,212,0.02)');
@@ -92,17 +94,24 @@
         window.addEventListener('scroll', function(){ if (popup.style.display === 'block') positionPopup(); });
 
         // ====== 服务器状态 ======
+        function tr(key, subst) { return window.t ? window.t(key, subst) : key; }
+
         async function fetchStatus() {
             try {
                 var r = await fetch('https://api.mcsrvstat.us/2/4u4n.qiunaruto.top', { cache:'no-store' });
                 var d = await r.json();
                 var cnt = d.online ? (d.players?.online || 0) : 0;
-                pc.childNodes[0].textContent = cnt;
-                document.getElementById('max-players').textContent = d.players?.max || '--';
+                var countEl = document.getElementById('player-count-value');
+                if (countEl) countEl.textContent = cnt;
+                var maxEl = document.getElementById('max-players');
+                if (maxEl) maxEl.textContent = d.players?.max || '--';
                 var st = document.getElementById('server-status');
-                st.textContent = d.online ? window.t('hero_status_online') : window.t('hero_status_offline');
-                st.className = 'ml-2 px-2 py-0.5 text-xs rounded-full ' + (d.online ? 'bg-green-500' : 'bg-red-500');
-                document.getElementById('last-update').textContent = window.t('hero_last_update',{time:new Date().toLocaleTimeString()});
+                if (st) {
+                    st.textContent = d.online ? tr('hero_status_online') : tr('hero_status_offline');
+                    st.className = 'ml-2 px-2 py-0.5 text-xs rounded-full ' + (d.online ? 'bg-green-500' : 'bg-red-500');
+                }
+                var updEl = document.getElementById('last-update');
+                if (updEl) updEl.textContent = tr('hero_last_update', {time:new Date().toLocaleTimeString()});
                 addPoint(cnt);
                 if (popup.style.display === 'block') { setTimeout(renderChart, 100); positionPopup(); }
             } catch(e) { console.error(e); }

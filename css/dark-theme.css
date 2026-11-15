@@ -99,16 +99,6 @@
     color: var(--text-secondary) !important;
 }
 
-[data-theme="dark"] .team-member {
-    background-color: var(--bg-card) !important;
-}
-[data-theme="dark"] .team-member h3 {
-    color: var(--text-primary) !important;
-}
-[data-theme="dark"] .team-member .text-gray-600 {
-    color: var(--text-secondary) !important;
-}
-
 /* FAQ 区域（合并彩色边框 + 文字修复，删除重复） */
 [data-theme="dark"] .faq-item {
     background-color: #1e293b !important;
@@ -239,20 +229,6 @@
 [data-theme="dark"] #terms-content .info-tip {
     background: rgba(59,130,246,0.1) !important;
     color: #93c5fd !important;
-}
-
-[data-theme="dark"] #terms-modal .bg-gray-50 { background-color: #0f172a !important; }
-[data-theme="dark"] #terms-modal .border-gray-100,
-[data-theme="dark"] #terms-modal .border-gray-200 {
-    border-color: var(--border-color) !important;
-}
-[data-theme="dark"] #terms-modal .text-gray-500 { color: var(--text-muted) !important; }
-[data-theme="dark"] #terms-modal .border-gray-300 {
-    border-color: var(--border-color) !important;
-    color: var(--text-secondary) !important;
-}
-[data-theme="dark"] #terms-modal .border-gray-300:hover {
-    background-color: var(--hover-bg) !important;
 }
 
 [data-theme="dark"] #player-info-modal .bg-gray-800 { background-color: #0f172a !important; }
@@ -576,17 +552,6 @@ footer a, .utility-tab {
 [data-theme="dark"] #terms-modal button.border-gray-300 {
     border-color: #475569 !important;
     color: #cbd5e1 !important;
-}
-
-/* ====== 修复 Toast 提示被导航栏遮挡 ====== */
-
-[data-theme="dark"] #command-toast {
-    z-index: 99999 !important;
-}
-
-/* 同时确保复制成功弹窗也在最顶层 */
-[data-theme="dark"] #copy-success-modal {
-    z-index: 99998 !important;
 }
 
 /* ====== 史莱姆区块查询暗色适配 ====== */

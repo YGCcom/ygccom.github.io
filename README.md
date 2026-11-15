@@ -31,7 +31,7 @@
 ### 🎨 用户体验
 - **暗黑/明亮主题切换** — 一键切换，自动保存偏好（localStorage）
 - **中/英双语切换** — 全局中英文切换，覆盖所有页面内容
-- **自适应响应式设计** — 桌面端 / 平板 / 手机完美适配
+- **自适应响应式设计** — 桌面端 / 平板 / 手机完美适配（抽屉式移动导航、触摸目标优化）
 - **自定义酷炫加载动画** — Minecraft 主题进度条 + 随机提示文字
 - **背景音乐播放器** — 隐藏式迷你播放器，支持播放列表
 - **打字机标题效果** — 动态打字动画展现服务器名称
@@ -87,6 +87,8 @@ V3/
 │   ├── music-player.css        # 音乐播放器样式
 │   ├── tools.css               # 工具页面样式
 │   ├── responsive.css          # 响应式布局
+│   ├── premium.css             # ✨ 设计层（导航 / 团队分组 / 质感 / 移动端）
+│   ├── icon-fallback.css       # 🛡 图标字体缺失时的视觉兜底
 │   └── titletype.css           # 标题特效
 │
 ├── js/                         # JavaScript 脚本
@@ -102,6 +104,7 @@ V3/
 │   ├── music-player.js         # 🎵 背景音乐播放器
 │   ├── carousel.js             # 🎠 轮播图
 │   ├── qq-avatar.js            # 👤 QQ 头像加载
+│   ├── icon-fallback.js        # 🛡 图标字体加载检测（异常时启用兜底）
 │   ├── anti-devtools.js        # 🚫 开发者工具检测
 │   │
 │   ├── docs.js                 # 📄 文档页逻辑（公告/帮助/条款渲染）
@@ -121,6 +124,13 @@ V3/
 │   ├── 4u4n.png / 4u4nc.png   # Logo
 │   ├── banner1~4.png           # 轮播图
 │   └── *.png / *.jpg           # 其他图片
+│
+├── vendor/                     # 本地化第三方前端依赖（不依赖外部 CDN）
+│   ├── fontawesome/
+│   │   ├── css/all.min.css     # Font Awesome 6.4.0
+│   │   └── webfonts/*.woff2   # Solid / Regular / Brands / v4 兼容字体
+│   ├── tailwind/tailwind.js    # Tailwind Play CDN 3.x 本地副本
+│   └── chartjs/chart.umd.js    # Chart.js 4.4.0
 │
 └── opt/
     └── auth-api/
@@ -151,6 +161,10 @@ php -S localhost:8080    # PHP
 ```
 
 > ⚠️ 直接用 `file://` 协议打开可能导致 CORS 问题（在线玩家 API 请求被拦截）。
+>
+> ✅ 图标字体、Tailwind、Chart.js 均已放在 `vendor/` 本地目录，部署时必须一并上传；
+> 即使外部 CDN 全部不可达，页面排版与图标也不会出现空白。若 `vendor/` 缺失，
+> `js/icon-fallback.js` 会检测到图标字体不可用并显示中性占位符号，而不是留下空洞。
 
 ### 登录 API（可选）
 
@@ -179,7 +193,7 @@ node server.js            # 启动 API 服务器（默认 3001 端口）
 | **种子** | 世界种子展示 + 复制 |
 | **优势** | 4 张优势卡片 |
 | **规则** | 服务器内 & 群内规则 |
-| **团队** | 核心成员 + 协助管理员展示 |
+| **团队** | 创始人 & 服主 / 现任管理组 / 协管组 三段式分组展示 |
 | **FAQ** | 4 个折叠问答 |
 | **页脚** | 快速链接 + 联系方式 |
 

@@ -844,3 +844,34 @@ a { color: var(--docs-blue); text-decoration: none; }
 [data-theme="dark"] .docs-section-body::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #06b6d4, #3b82f6); border-radius: 3px; }
 
 [data-theme="dark"] .docs-sidebar::-webkit-scrollbar-thumb { background: #334155; }
+
+/* ====== 与主页设计层同步的细节 ====== */
+.docs-header { box-shadow: 0 4px 22px rgba(15, 23, 42, 0.045); }
+.docs-header::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #06b6d4 22%, #14b8a6 52%, #5856d6 82%, transparent);
+    opacity: 0.85;
+}
+.docs-brand-img { box-shadow: 0 3px 10px rgba(15, 23, 42, 0.10); }
+.docs-back, .docs-theme-toggle, .docs-lang-dropdown .lang-current {
+    transition: all 0.25s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.docs-lang-dropdown .lang-dropdown-menu {
+    max-height: min(60vh, 360px);
+    overflow-y: auto;
+    border-radius: 14px;
+}
+.docs-section { scroll-margin-top: calc(var(--docs-header-h) + 16px); }
+:focus-visible { outline: 2px solid var(--docs-cyan); outline-offset: 3px; }
+
+@media (max-width: 600px) {
+    .docs-header-inner { padding: 0 12px; gap: 10px; }
+    .docs-brand { font-size: 0.92rem; gap: 8px; }
+    .docs-brand-img { width: 26px; height: 26px; }
+    .docs-back { padding: 8px 10px; font-size: 0.8rem; }
+    .docs-header-right { gap: 8px; }
+    .docs-lang-dropdown .lang-dropdown-menu { right: -8px; min-width: 160px; }
+}

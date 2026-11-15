@@ -2,6 +2,9 @@
     'use strict';
 
     document.addEventListener('click', function(e) {
+        // 防御：部分浏览器下 e.target 不是 Element
+        if (!e.target || typeof e.target.closest !== 'function') return;
+
         // 关闭弹窗按钮
         var closeBtn = e.target.closest('.modal-close-btn');
         if (closeBtn && closeBtn.dataset.modal) {
@@ -36,7 +39,11 @@
         if (copyBtn && copyBtn.dataset.target) {
             var el = document.getElementById(copyBtn.dataset.target);
             if (el) {
-                Utils.copyText(el.textContent.trim()).then(function() {
+                Utils.copyText(el.textContent.trim()).then(function(ok) {
+                    if (ok === false) {
+                        Utils.showToast(window.t ? window.t('copy_failed') : '复制失败，请手动复制');
+                        return;
+                    }
                     var msg = copyBtn.dataset.msg || 'copy_success';
                     // 若为 i18n key 则翻译，否则直接使用原文本
                     var msgEl = document.getElementById('copy-success-msg');
@@ -53,14 +60,20 @@
         var cmd = e.target.closest('.cmd-item');
         if (cmd && !cmd.dataset.action) {
             var command = cmd.dataset.cmd || cmd.textContent.trim().split(/\s+/)[0];
-            Utils.copyText(command).then(function() { Utils.showToast(window.t ? window.t('toast_cmd_copied') : '指令复制成功'); });
+            Utils.copyText(command).then(function(ok) {
+                if (ok === false) { Utils.showToast(window.t ? window.t('copy_failed') : '复制失败，请手动复制'); return; }
+                Utils.showToast(window.t ? window.t('toast_cmd_copied') : '指令复制成功');
+            });
             return;
         }
 
         // 特殊符号复制
         var charBtn = e.target.closest('.char-btn');
         if (charBtn) {
-            Utils.copyText(charBtn.textContent.trim()).then(function() { Utils.showToast('已复制'); });
+            Utils.copyText(charBtn.textContent.trim()).then(function(ok) {
+                if (ok === false) { Utils.showToast(window.t ? window.t('copy_failed') : '复制失败，请手动复制'); return; }
+                Utils.showToast('已复制');
+            });
             return;
         }
 

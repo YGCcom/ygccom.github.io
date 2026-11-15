@@ -1,0 +1,33 @@
+/* ==========================================================================
+   4U4N · 图标字体兜底
+   正常情况由 vendor/fontawesome 提供图标字体，本文件不产生任何视觉效果。
+   仅当 icon-fallback.js 检测到图标字体完全不可用（部署漏传 vendor/、
+   字体被浏览器策略拦截等）时，给 <html> 加上 .no-icon-font，
+   用一个中性几何符号顶替图标，避免出现"纯色空白圆/空白方块"。
+   ========================================================================== */
+
+html.no-icon-font i[class*="fa-"]::before,
+html.no-icon-font span[class*="fa-"]::before,
+html.no-icon-font .faq-question::before {
+    content: "\25C6" !important; /* ◆ */
+    font-family: Arial, "Microsoft YaHei", sans-serif !important;
+    font-weight: 700 !important;
+    font-style: normal !important;
+    font-size: 1.05em;
+    line-height: 1;
+    opacity: 0.78;
+}
+
+/* 图标-only 按钮：让替代符号居中、尺寸稳定，不撑破圆角容器 */
+html.no-icon-font .nav-icon-btn i[class*="fa-"],
+html.no-icon-font .mobile-menu-btn i[class*="fa-"],
+html.no-icon-font #backToTop i[class*="fa-"],
+html.no-icon-font .team-group-icon i[class*="fa-"],
+html.no-icon-font .advantage-card i[class*="fa-"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1em;
+    height: 1em;
+    font-size: 1.35rem;
+}

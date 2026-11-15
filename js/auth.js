@@ -196,10 +196,11 @@
                         '</a>' +
                     '</div>' +
                 '</div>';
-            navBtn.style.cssText = 'background:transparent;padding:0;border-radius:0;display:inline-flex;';
+            navBtn.classList.add('is-user');
 
             // 移动端：显示用户信息
             if (mobileBtn) {
+                mobileBtn.classList.add('is-user');
                 mobileBtn.innerHTML =
                     '<div class="mobile-user-info">' +
                         '<div class="mobile-user-avatar">' + initial + '</div>' +
@@ -243,11 +244,11 @@
         } else {
             // 未登录状态
             navBtn.innerHTML = '<i class="fas fa-user"></i><span id="nav-login-text">' + window.t('nav_login') + '</span>';
-            navBtn.style.cssText = 'display:inline-flex;align-items:center;gap:4px;background:linear-gradient(135deg,#06b6d4,#14b8a6);color:white;padding:6px 16px;border-radius:20px;font-size:0.85rem;font-weight:600;';
+            navBtn.classList.remove('is-user');
 
             if (mobileBtn) {
                 mobileBtn.innerHTML = '<i class="fas fa-user"></i><span id="nav-login-text-mobile">' + window.t('nav_login') + '</span>';
-                mobileBtn.style.cssText = 'display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,#06b6d4,#14b8a6);color:white;padding:10px 16px;border-radius:12px;font-weight:600;';
+                mobileBtn.classList.remove('is-user');
             }
         }
     }

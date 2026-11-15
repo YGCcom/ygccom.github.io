@@ -41,32 +41,28 @@ body::before {
     background-color: rgba(255, 255, 255, 0.9) !important;
 }
 
-/* 旧加载圈（保留兼容） */
-.loader-circle {
-    width: 50px;
-    height: 50px;
-    border: 5px solid rgba(0, 0, 0, 0.1);
-    border-top: 5px solid var(--primary);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
 /* 全局滚动条 */
 ::-webkit-scrollbar { width: 8px; height: 8px; }
 ::-webkit-scrollbar-track { background: #f1f1f1; }
 ::-webkit-scrollbar-thumb { background: linear-gradient(to bottom, #06b6d4, #22d3ee); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: linear-gradient(to bottom, #0ea5e9, #38bdf8); }
 
-/* Font Awesome 修复 */
-.fab, .fa, .fas, .far, .fal { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
-.fab { font-family: "Font Awesome 6 Brands" !important; }
-.fas { font-family: "Font Awesome 6 Free" !important; font-weight: 900; }
-.far { font-family: "Font Awesome 6 Free" !important; font-weight: 400; }
+/* Font Awesome：上面的全局 * 字体规则带 !important，会覆盖图标字体，
+   这里必须同样用 !important 且更高特异性把图标字体夺回来，否则图标变空白/豆腐块。 */
+.fa, .fas, .fa-solid, .far, .fa-regular, .fal, .fa-light,
+.fat, .fa-thin, .fa-classic, .fa-sharp {
+    font-family: "Font Awesome 6 Free" !important;
+    font-weight: 900 !important;
+}
+.far, .fa-regular { font-weight: 400 !important; }
+.fal, .fa-light { font-weight: 300 !important; }
+.fat, .fa-thin { font-weight: 100 !important; }
+.fab, .fa-brands {
+    font-family: "Font Awesome 6 Brands" !important;
+    font-weight: 400 !important;
+}
+i[class*="fa-"], span[class*="fa-"] { font-style: normal; }
+i[class*="fa-"] { flex-shrink: 0; }
 
 /* 渐变色文字通用 */
 .bg-clip-text { -webkit-background-clip: text; background-clip: text; }

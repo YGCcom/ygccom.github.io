@@ -25,7 +25,7 @@
         nav_features:'特色', nav_ip:'IP', nav_seed:'种子', nav_advantages:'优势',
         nav_rules:'规则', nav_team:'团队', nav_faq:'问题', nav_social:'社交媒体',
         nav_help:'帮助', nav_announce:'公告', nav_login:'登录', nav_logout:'退出登录',
-        nav_theme_mode:'主题模式', copy_btn:'复制', copy_success:'已复制到剪贴板',
+        nav_theme_mode:'主题模式', copy_btn:'复制', copy_success:'已复制到剪贴板', copy_failed:'复制失败，请手动复制',
         btn_confirm:'确定', btn_i_know:'我知道了',
         // Preloader
         preload_title:'4U4N 无规则生存服务器', preload_subtitle:'StarCraft Network',
@@ -74,9 +74,10 @@
         // Team
         team_title1:'运营与管理团队', team_title2:'本服务器项目内部核心成员',
         team_title3:'服务器协助管理', team_title4:'第三方玩家协助管理',
-        team_role_owner:'法定服主', team_role_admin:'行政管理',
+        team_group_founders:'创始人 & 服主', team_group_management:'现任管理组',
+        team_role_founder:'创始人', team_role_owner:'服主',
         team_role_host:'服务器主机提供&技术开发', team_role_support:'技术支持',
-        team_role_bot:'机器人', team_role_assist:'协助管理', team_mod_rules:'协管守则',
+        team_role_assist:'协助管理', team_mod_rules:'协管守则',
         // FAQ
         faq_title:'常见问题', faq_q1:'服务器支不支持货币？',
         faq_a1:'服务器内无货币系统，一切交易请以物换物！',
@@ -105,6 +106,7 @@
         help_bot:'机器人指令（群内）', help_mcmmo:'等级指南 MCMMO',
         help_level_guide:'等级指南（点击查看）', help_more_docs:'更多内容请查看服务器文档',
         // Announce modal
+        announce_title:'游戏公告', announce_year:'2026年',
         announce_modal_p1:'我们仅用 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">McMMO技能等级之和</strong> 作为等级评判标准',
         announce_modal_p2:'服务器纯公益，<strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">无任何充值氪金项目</strong>',
         announce_modal_p3:'所有称号均可通过命令 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> 以消耗物品方式获取',
@@ -258,7 +260,7 @@
         nav_features:'Features', nav_ip:'IP', nav_seed:'Seed', nav_advantages:'Advantages',
         nav_rules:'Rules', nav_team:'Team', nav_faq:'FAQ', nav_social:'Social',
         nav_help:'Help', nav_announce:'Notice', nav_login:'Login', nav_logout:'Logout',
-        nav_theme_mode:'Theme', copy_btn:'Copy', copy_success:'Copied!',
+        nav_theme_mode:'Theme', copy_btn:'Copy', copy_success:'Copied!', copy_failed:'Copy failed, please copy manually',
         btn_confirm:'OK', btn_i_know:'Got it',
         preload_title:'4U4N Anarchy Survival Server', preload_subtitle:'StarCraft Network',
         preload_version:'v2.0 · Preparing your world', preload_loading:'Loading website...',
@@ -298,8 +300,9 @@
         rules_more:'Check group for more',
         team_title1:'Operations & Management', team_title2:'Core Team Members',
         team_title3:'Assistant Moderators', team_title4:'Community Assistant Mods',
-        team_role_owner:'Owner', team_role_admin:'Admin', team_role_host:'Host & Dev',
-        team_role_support:'Tech Support', team_role_bot:'Bot', team_role_assist:'Asst. Mod',
+        team_group_founders:'Founders & Owner', team_group_management:'Current Management',
+        team_role_founder:'Founder', team_role_owner:'Owner',
+        team_role_host:'Host & Dev', team_role_support:'Tech Support', team_role_assist:'Asst. Mod',
         team_mod_rules:'Mod Rules',
         faq_title:'FAQ', faq_q1:'Does the server have currency?',
         faq_a1:'No currency — barter only!',
@@ -323,6 +326,7 @@
         help_title:'Server Help', help_basic:'Basic Commands', help_special:'Special Commands',
         help_bot:'Bot Commands (QQ Group)', help_mcmmo:'Level Guide — MCMMO',
         help_level_guide:'Level Guide (click to view)', help_more_docs:'More details in Server Docs',
+        announce_title:'Game Announcements', announce_year:'2026',
         announce_modal_p1:'We use <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">total McMMO levels</strong> as the ranking standard',
         announce_modal_p2:'The server is non-profit <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">no pay-to-win features</strong>',
         announce_modal_p3:'All titles via <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> using items',
@@ -462,7 +466,7 @@
         nav_features:'특징', nav_ip:'IP', nav_seed:'시드', nav_advantages:'장점',
         nav_rules:'규칙', nav_team:'팀', nav_faq:'FAQ', nav_social:'소셜',
         nav_help:'도움말', nav_announce:'공지', nav_login:'로그인', nav_logout:'로그아웃',
-        nav_theme_mode:'테마', copy_btn:'복사', copy_success:'클립보드에 복사됨',
+        nav_theme_mode:'테마', copy_btn:'복사', copy_success:'클립보드에 복사됨', copy_failed:'복사 실패, 직접 복사해 주세요',
         btn_confirm:'확인', btn_i_know:'알겠습니다',
         preload_title:'4U4N 무정부 생존 서버', preload_subtitle:'StarCraft Network',
         preload_version:'v2.0 · 세계 준비 중', preload_loading:'웹사이트 로딩 중...',
@@ -500,8 +504,9 @@
         rules_title:'서버 & 그룹 규칙', rules_server_title:'게임 내', rules_group_title:'QQ 그룹 내',
         rules_more:'자세한 내용은 그룹에서 확인',
         team_title1:'운영 및 관리팀', team_title2:'핵심 팀원', team_title3:'보조 관리자', team_title4:'커뮤니티 보조 관리자',
-        team_role_owner:'소유자', team_role_admin:'관리자', team_role_host:'호스트 & 개발',
-        team_role_support:'기술 지원', team_role_bot:'봇', team_role_assist:'보조 관리자', team_mod_rules:'관리 규칙',
+        team_group_founders:'창립자 & 소유자', team_group_management:'현재 관리팀',
+        team_role_founder:'창립자', team_role_owner:'소유자',
+        team_role_host:'호스트 & 개발', team_role_support:'기술 지원', team_role_assist:'보조 관리자', team_mod_rules:'관리 규칙',
         faq_title:'자주 묻는 질문', faq_q1:'서버에 화폐가 있나요?', faq_a1:'화폐 없음 — 물물교환만 가능!',
         faq_q2:'정품 계정이 필요한가요?', faq_a2:'정품 및 오프라인 모드 모두 지원. 봇 계정도 환영합니다.',
         faq_q3:'도움은 어떻게 받나요?', faq_a3:'QQ 그룹 758633338 또는 1104679773에 가입하세요.',
@@ -520,6 +525,7 @@
         help_title:'서버 도움말', help_basic:'기본 명령어', help_special:'특수 명령어',
         help_bot:'봇 명령어 (QQ 그룹)', help_mcmmo:'레벨 가이드 — MCMMO',
         help_level_guide:'레벨 가이드 (클릭하여 보기)', help_more_docs:'자세한 내용은 서버 문서에서 확인',
+        announce_title:'게임 공지', announce_year:'2026년',
         announce_modal_p1:'<strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">McMMO 스킬 레벨 합계</strong>를 등급 기준으로 사용합니다',
         announce_modal_p2:'서버는 완전 비영리 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">유료 결제 요소 없음</strong>',
         announce_modal_p3:'모든 칭호는 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> 명령어로 아이템을 소비하여 획득',
@@ -638,7 +644,7 @@
         nav_features:'特徴', nav_ip:'IP', nav_seed:'シード', nav_advantages:'利点',
         nav_rules:'ルール', nav_team:'チーム', nav_faq:'FAQ', nav_social:'SNS',
         nav_help:'ヘルプ', nav_announce:'お知らせ', nav_login:'ログイン', nav_logout:'ログアウト',
-        nav_theme_mode:'テーマ', copy_btn:'コピー', copy_success:'クリップボードにコピーしました',
+        nav_theme_mode:'テーマ', copy_btn:'コピー', copy_success:'クリップボードにコピーしました', copy_failed:'コピーに失敗しました。手動でコピーしてください',
         btn_confirm:'OK', btn_i_know:'了解',
         preload_title:'4U4N アナーキーサバイバルサーバー', preload_subtitle:'StarCraft Network',
         preload_version:'v2.0 · ワールド準備中', preload_loading:'ウェブサイト読み込み中...',
@@ -675,8 +681,9 @@
         rules_title:'サーバー & グループルール', rules_server_title:'ゲーム内', rules_group_title:'QQグループ内',
         rules_more:'詳細はグループで確認',
         team_title1:'運営・管理チーム', team_title2:'コアチームメンバー', team_title3:'アシスタントモデレーター', team_title4:'コミュニティアシスタントMOD',
-        team_role_owner:'オーナー', team_role_admin:'管理者', team_role_host:'ホスト & 開発',
-        team_role_support:'テクニカルサポート', team_role_bot:'ボット', team_role_assist:'アシスタントMOD', team_mod_rules:'MODルール',
+        team_group_founders:'創設者 & オーナー', team_group_management:'現運営チーム',
+        team_role_founder:'創設者', team_role_owner:'オーナー',
+        team_role_host:'ホスト & 開発', team_role_support:'テクニカルサポート', team_role_assist:'アシスタントMOD', team_mod_rules:'MODルール',
         faq_title:'よくある質問', faq_q1:'サーバーに通貨はありますか？', faq_a1:'通貨なし — 物々交換のみ！',
         faq_q2:'正規アカウントが必要ですか？', faq_a2:'正規・オフラインモード両方対応。ボットアカウントも歓迎。',
         faq_q3:'ヘルプが必要な場合は？', faq_a3:'QQグループ 758633338 または 1104679773 に参加。',
@@ -695,6 +702,7 @@
         help_title:'サーバーヘルプ', help_basic:'基本コマンド', help_special:'特殊コマンド',
         help_bot:'ボットコマンド (QQグループ)', help_mcmmo:'レベルガイド — MCMMO',
         help_level_guide:'レベルガイド（クリックして表示）', help_more_docs:'詳細はサーバードキュメントをご覧ください',
+        announce_title:'ゲームお知らせ', announce_year:'2026年',
         announce_modal_p1:'<strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">McMMOスキルレベルの合計</strong>をランク基準として使用',
         announce_modal_p2:'サーバーは完全非営利 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">課金要素なし</strong>',
         announce_modal_p3:'すべての称号は <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> コマンドでアイテム消費により取得',
@@ -813,7 +821,7 @@
         nav_features:'Особенности', nav_ip:'IP', nav_seed:'Сид', nav_advantages:'Преимущества',
         nav_rules:'Правила', nav_team:'Команда', nav_faq:'FAQ', nav_social:'Соцсети',
         nav_help:'Помощь', nav_announce:'Новости', nav_login:'Вход', nav_logout:'Выход',
-        nav_theme_mode:'Тема', copy_btn:'Копировать', copy_success:'Скопировано!',
+        nav_theme_mode:'Тема', copy_btn:'Копировать', copy_success:'Скопировано!', copy_failed:'Не удалось скопировать, скопируйте вручную',
         btn_confirm:'ОК', btn_i_know:'Понял',
         preload_title:'4U4N Анархия Выживание', preload_subtitle:'StarCraft Network',
         preload_version:'v2.0 · Подготовка мира', preload_loading:'Загрузка сайта...',
@@ -849,8 +857,9 @@
         rules_title:'Правила сервера и группы', rules_server_title:'В игре', rules_group_title:'В QQ группе',
         rules_more:'Подробнее в группе',
         team_title1:'Управление и администрация', team_title2:'Основная команда', team_title3:'Помощники модераторов', team_title4:'Общественные помощники',
-        team_role_owner:'Владелец', team_role_admin:'Админ', team_role_host:'Хост и разработка',
-        team_role_support:'Техподдержка', team_role_bot:'Бот', team_role_assist:'Пом. модератора', team_mod_rules:'Правила модераторов',
+        team_group_founders:'Основатели и владелец', team_group_management:'Текущая администрация',
+        team_role_founder:'Основатель', team_role_owner:'Владелец',
+        team_role_host:'Хост и разработка', team_role_support:'Техподдержка', team_role_assist:'Пом. модератора', team_mod_rules:'Правила модераторов',
         faq_title:'Часто задаваемые вопросы', faq_q1:'Есть ли на сервере валюта?', faq_a1:'Валюты нет — только бартер!',
         faq_q2:'Нужен ли лицензионный аккаунт?', faq_a2:'Поддерживается и лицензия, и офлайн. Боты приветствуются.',
         faq_q3:'Как получить помощь?', faq_a3:'Вступите в QQ группу 758633338 или 1104679773.',
@@ -869,6 +878,7 @@
         help_title:'Помощь по серверу', help_basic:'Основные команды', help_special:'Специальные команды',
         help_bot:'Команды бота (QQ группа)', help_mcmmo:'Руководство по уровням — MCMMO',
         help_level_guide:'Руководство (нажмите для просмотра)', help_more_docs:'Подробнее в документации сервера',
+        announce_title:'Игровые объявления', announce_year:'2026 г.',
         announce_modal_p1:'Мы используем <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">сумму уровней навыков McMMO</strong> как стандарт ранжирования',
         announce_modal_p2:'Сервер полностью некоммерческий <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">никаких донатов</strong>',
         announce_modal_p3:'Все титулы получаются через команду <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> за игровые предметы',
@@ -989,7 +999,7 @@
         nav_features:'Características', nav_ip:'IP', nav_seed:'Semilla', nav_advantages:'Ventajas',
         nav_rules:'Reglas', nav_team:'Equipo', nav_faq:'FAQ', nav_social:'Social',
         nav_help:'Ayuda', nav_announce:'Avisos', nav_login:'Iniciar sesión', nav_logout:'Cerrar sesión',
-        nav_theme_mode:'Tema', copy_btn:'Copiar', copy_success:'¡Copiado!',
+        nav_theme_mode:'Tema', copy_btn:'Copiar', copy_success:'¡Copiado!', copy_failed:'Error al copiar, cópialo manualmente',
         btn_confirm:'OK', btn_i_know:'Entendido',
         preload_title:'4U4N Servidor Anarquía Supervivencia', preload_subtitle:'StarCraft Network',
         preload_version:'v2.0 · Preparando tu mundo', preload_loading:'Cargando sitio...',
@@ -1026,8 +1036,9 @@
         rules_title:'Reglas del Servidor y Grupo', rules_server_title:'En juego', rules_group_title:'En QQ',
         rules_more:'Más info en el grupo',
         team_title1:'Operaciones y Gestión', team_title2:'Equipo Principal', team_title3:'Moderadores Asistentes', team_title4:'Moderadores Comunitarios',
-        team_role_owner:'Dueño', team_role_admin:'Admin', team_role_host:'Host y Dev',
-        team_role_support:'Soporte Técnico', team_role_bot:'Bot', team_role_assist:'Mod. Asistente', team_mod_rules:'Reglas de Mods',
+        team_group_founders:'Fundadores y Dueño', team_group_management:'Equipo de Gestión Actual',
+        team_role_founder:'Fundador', team_role_owner:'Dueño',
+        team_role_host:'Host y Dev', team_role_support:'Soporte Técnico', team_role_assist:'Mod. Asistente', team_mod_rules:'Reglas de Mods',
         faq_title:'Preguntas Frecuentes', faq_q1:'¿El servidor tiene moneda?', faq_a1:'Sin moneda — ¡solo trueque!',
         faq_q2:'¿Se requiere cuenta premium?', faq_a2:'Se admiten cuentas premium y offline. Los bots son bienvenidos.',
         faq_q3:'¿Cómo obtengo ayuda?', faq_a3:'Únete al grupo QQ 758633338 o 1104679773.',
@@ -1046,6 +1057,7 @@
         help_title:'Ayuda del Servidor', help_basic:'Comandos Básicos', help_special:'Comandos Especiales',
         help_bot:'Comandos del Bot (QQ)', help_mcmmo:'Guía de Niveles — MCMMO',
         help_level_guide:'Guía de niveles (clic para ver)', help_more_docs:'Más detalles en Documentos del Servidor',
+        announce_title:'Anuncios del Juego', announce_year:'2026',
         announce_modal_p1:'Usamos <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">la suma de niveles de habilidad McMMO</strong> como estándar de clasificación',
         announce_modal_p2:'El servidor es sin fines de lucro <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">sin funciones de pago</strong>',
         announce_modal_p3:'Todos los títulos se obtienen mediante <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> usando objetos',
@@ -1187,6 +1199,8 @@
 
     function applyLanguage() {
         var lang = getLang();
+        // 同步 <html lang>，缺失词典的语言按实际回退语言标记
+        document.documentElement.lang = L[lang] ? lang : 'en';
         var elems = document.querySelectorAll('[data-i18n]');
         elems.forEach(function (el) {
             var key = el.getAttribute('data-i18n');
@@ -1228,7 +1242,7 @@
     function switchLangTo(lang) {
         if (LANGS.indexOf(lang) === -1) return;
         var cur = getLang();
-        if (cur === lang) return;
+        if (cur === lang) { applyLanguage(); return; }
         setLang(lang);
         applyLanguage();
         window.dispatchEvent(new CustomEvent('langchange', { detail: { lang: lang } }));
