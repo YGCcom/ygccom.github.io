@@ -96,9 +96,15 @@
         // ====== 服务器状态 ======
         function tr(key, subst) { return window.t ? window.t(key, subst) : key; }
 
+        var fetching = false;
         async function fetchStatus() {
+            if (fetching || document.hidden) return;
+            fetching = true;
+            var controller = new AbortController();
+            var timeout = setTimeout(function() { controller.abort(); }, 10000);
             try {
-                var r = await fetch('https://api.mcsrvstat.us/2/4u4n.qiunaruto.top', { cache:'no-store' });
+                var r = await fetch('https://api.mcsrvstat.us/2/4u4n.qiunaruto.top', { cache:'no-store', signal: controller.signal });
+                if (!r.ok) throw new Error("Status HTTP " + r.status);
                 var d = await r.json();
                 var cnt = d.online ? (d.players?.online || 0) : 0;
                 var countEl = document.getElementById('player-count-value');
@@ -115,8 +121,17 @@
                 addPoint(cnt);
                 if (popup.style.display === 'block') { setTimeout(renderChart, 100); positionPopup(); }
             } catch(e) { console.error(e); }
+            finally { clearTimeout(timeout); fetching = false; }
         }
-        fetchStatus();
-        setInterval(fetchStatus, 15000);
+        var pollTimer = null;
+        function resumePolling() {
+            clearInterval(pollTimer);
+            pollTimer = null;
+            if (document.hidden) return;
+            fetchStatus();
+            pollTimer = setInterval(fetchStatus, 15000);
+        }
+        document.addEventListener("visibilitychange", resumePolling);
+        resumePolling();
     });
 })();

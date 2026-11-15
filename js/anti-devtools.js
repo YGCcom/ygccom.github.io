@@ -1,50 +1,62 @@
-// 检测开发者工具打开并跳转 https://www.yuanshen.com/
+/** 开发者工具拦截：快捷键、右键菜单、低频调试暂停检测。 */
 (function() {
-    "use strict";
-    const GENSHIN_URL = "https://www.yuanshen.com/";
+    'use strict';
+    var REDIRECT_URL = 'https://www.yuanshen.com/';
+    var redirected = false;
+    var timer = null;
+    var slowChecks = 0;
+    var INTERVAL = 2500;
 
-    // 1. 拦截快捷键
-    document.addEventListener('keydown', function(e) {
-        if (
-            e.key === 'F12' ||
-            (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) ||
-            (e.ctrlKey && (e.key === 'u' || e.key === 'U'))
-        ) {
-            e.preventDefault();
-            window.location.href = GENSHIN_URL;
-        }
-    });
+    function redirect() {
+        if (redirected) return;
+        redirected = true;
+        clearTimeout(timer);
+        window.location.replace(REDIRECT_URL);
+    }
 
-    // 2. 禁用右键菜单
-    document.addEventListener('contextmenu', e => e.preventDefault());
+    // 捕获阶段拦截，覆盖控制台、元素检查器、源码与 Mac 快捷键。
+    window.addEventListener('keydown', function(event) {
+        var key = (event.key || '').toLowerCase();
+        var code = event.code || '';
+        var inspectKey = ['i', 'j', 'c', 'k'].indexOf(key) !== -1 || ['KeyI', 'KeyJ', 'KeyC', 'KeyK'].indexOf(code) !== -1;
+        var sourceKey = key === 'u' || code === 'KeyU';
+        var blocked = key === 'f12' || code === 'F12' || event.keyCode === 123 ||
+            (event.ctrlKey && event.shiftKey && inspectKey) ||
+            (event.metaKey && event.altKey && inspectKey) ||
+            ((event.ctrlKey || event.metaKey) && sourceKey);
+        if (!blocked) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        redirect();
+    }, { capture: true, passive: false });
 
-    // 3. 优化的调试器检测（减少误判）
-    let checkTimer = null;
-    const CHECK_INTERVAL = 1500; // 降低频率，减少性能开销
+    window.addEventListener('contextmenu', function(event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+    }, { capture: true, passive: false });
 
-    const checkDebugger = () => {
-        const start = performance.now();
+    function schedule() {
+        clearTimeout(timer);
+        timer = null;
+        if (!document.hidden && !redirected) timer = setTimeout(check, INTERVAL);
+    }
+    function check() {
+        timer = null;
+        if (document.hidden || redirected) return;
+        var startedAt = performance.now();
         debugger;
-        const elapsed = performance.now() - start;
-        if (elapsed > 100) {
-            window.location.href = GENSHIN_URL;
-        }
-    };
-
-    // 页面可见时才检测，不可见时暂停
-    const handleVisibility = () => {
-        if (document.hidden) {
-            if (checkTimer) {
-                clearInterval(checkTimer);
-                checkTimer = null;
-            }
-        } else {
-            if (!checkTimer) {
-                checkTimer = setInterval(checkDebugger, CHECK_INTERVAL);
-            }
-        }
-    };
-
-    document.addEventListener('visibilitychange', handleVisibility);
-    handleVisibility(); // 初始调用
+        var elapsed = performance.now() - startedAt;
+        // 两次连续的明显暂停才触发，避免单次系统卡顿误判。
+        if (document.hidden) slowChecks = 0;
+        else slowChecks = elapsed > 250 ? slowChecks + 1 : 0;
+        if (slowChecks >= 2) redirect();
+        else schedule();
+    }
+    document.addEventListener('visibilitychange', function() {
+        slowChecks = 0;
+        schedule();
+    });
+    window.addEventListener('pagehide', function() { clearTimeout(timer); timer = null; });
+    window.addEventListener('pageshow', schedule);
+    schedule();
 })();

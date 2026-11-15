@@ -19,7 +19,7 @@
             '',
             window.t('announce_p4') || '当你的服务器等级 **超过一万** 可获取专属称号和聊天颜色权限。',
             '',
-            window.t('announce_p5') || '服务器内禁止刷屏和宣传其他服务器，违者禁言 **7** 天。',
+            window.t('announce_p5') || '服务器内禁止刷屏和宣传其他服务器，违者将进行**处罚**。',
             '',
             '> ' + (window.t('announce_footer') || '祝您游玩愉快 —— StarCraft Network')
         ].join('\n');

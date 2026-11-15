@@ -22,7 +22,8 @@
 
         function start(delay) {
             if (timer) clearInterval(timer);
-            timer = setInterval(next, delay || 5000);
+            timer = null;
+            if (!document.hidden) timer = setInterval(next, delay || 5000);
         }
 
         start(window.innerWidth < 768 ? 6000 : 5000);
@@ -33,6 +34,10 @@
                 show(i);
                 start(window.innerWidth < 768 ? 6000 : 5000);
             });
+        });
+
+        document.addEventListener("visibilitychange", function() {
+            start(window.innerWidth < 768 ? 6000 : 5000);
         });
 
         var resizeTimeout;

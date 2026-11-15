@@ -1,107 +1,48 @@
-/**
- * 高级加载界面控制模块
- * 管理加载进度条动画、提示文字轮播、自动隐藏
- */
+/** 极简 Logo 启动动画。页面就绪后完成，不等待图片或第三方 iframe。 */
 (function() {
     'use strict';
-
     var preloader = document.getElementById('preloader');
     if (!preloader) return;
-
-    // 若是从文档页（terms.html / docs）返回，跳过加载动画直接进入首页
     try {
         if (sessionStorage.getItem('skip_preloader') === '1') {
             sessionStorage.removeItem('skip_preloader');
-            preloader.classList.add('hidden');
-            preloader.style.display = 'none';
-            document.body.style.overflow = '';
+            preloader.remove();
             return;
         }
-    } catch (e) { /* 隐私模式忽略 */ }
+    } catch(e) {}
 
     var bar = document.getElementById('preloader-bar');
-    var tipEl = document.getElementById('preloader-tip');
-
-    // 8 条 Minecraft 主题提示文字
-    var tips = [
-        'preload_tip_0', 'preload_tip_1', 'preload_tip_2', 'preload_tip_3',
-        'preload_tip_4', 'preload_tip_5', 'preload_tip_6', 'preload_tip_7'
-    ];
-
-    var tipIndex = 0;
-    var progress = 0;
-
-    /**
-     * 更新提示文字
-     */
-    function updateTip() {
-        if (!tipEl) return;
-        var key = tips[tipIndex % tips.length];
-        tipEl.textContent = (window.t && window.t(key)) ? window.t(key) : key;
-        tipIndex++;
+    var tip = document.getElementById('preloader-tip');
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var finished = false;
+    var readyTimer, fallbackTimer;
+    var startedAt = performance.now();
+    // 给 Logo 一次短暂的淡入时间。
+    var duration = reducedMotion ? 0 : 550;
+    function translate(key, fallback) {
+        var translated = window.t ? window.t(key) : '';
+        return translated && translated !== key ? translated : fallback;
     }
-
-    /**
-     * 推进进度条
-     */
-    function advanceProgress() {
-        if (progress < 85) {
-            progress += Math.random() * 8 + 2;
-            if (progress > 85) progress = 85;
-        } else if (progress < 99) {
-            progress += Math.random() * 1.5 + 0.3;
-            if (progress > 99) progress = 99;
-        }
-        if (bar) bar.style.width = progress + '%';
-    }
-
-    // 启动动画
-    var tipTimer = setInterval(updateTip, 800);
-    var progTimer = setInterval(advanceProgress, 200);
-
-    /**
-     * 完成加载，隐藏加载界面
-     */
-    function finishLoading() {
-        if (bar) bar.style.width = '100%';
-        if (tipEl) tipEl.textContent = window.t ? window.t('preload_done') : '✓ 加载完成';
-
-        clearInterval(tipTimer);
-        clearInterval(progTimer);
-
+    function finish() {
+        if (finished) return;
+        finished = true;
+        clearTimeout(readyTimer);
+        clearTimeout(fallbackTimer);
+        if (bar) bar.style.transform = 'scaleX(1)';
+        if (tip) tip.textContent = translate('preload_done', '✓ 加载完成');
         setTimeout(function() {
-            preloader.classList.add('hidden');
-            setTimeout(function() {
-                preloader.style.display = 'none';
-                document.body.style.overflow = '';
-            }, 500);
-        }, 300);
+            preloader.classList.add('is-exiting');
+            setTimeout(function() { preloader.remove(); }, reducedMotion ? 0 : 950);
+        }, reducedMotion ? 0 : 120);
     }
-
-    /**
-     * 检测页面是否加载完成
-     */
-    function checkReady() {
-        if (document.readyState === 'complete') {
-            finishLoading();
-        } else {
-            setTimeout(checkReady, 100);
-        }
+    function ready() {
+        if (bar) bar.style.transform = 'scaleX(.85)';
+        readyTimer = setTimeout(finish, Math.max(0, duration - (performance.now() - startedAt)));
     }
-
-    // 先运行 1.5 秒动画再检查
-    setTimeout(function() {
-        checkReady();
-    }, 1500);
-
-    // 兜底：最多 3.5 秒强制结束
-    setTimeout(function() {
-        if (!preloader.classList.contains('hidden')) {
-            finishLoading();
-        }
-    }, 3500);
-
-    // 显示第一条提示
-    updateTip();
-
+    if (tip) tip.textContent = translate('preload_loading', '正在加载官网...');
+    if (bar) bar.style.transform = 'scaleX(.35)';
+    fallbackTimer = setTimeout(finish, 3000);
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
+    else ready();
+    window.addEventListener('pageshow', function(event) { if (event.persisted) finish(); });
 })();

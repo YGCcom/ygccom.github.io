@@ -2,6 +2,15 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
+    <script>
+        // 在样式与页面绘制前恢复主题，避免暗色模式先闪出白色。
+        try {
+            if (localStorage.getItem('4u4n_theme') === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+            }
+        } catch (e) {}
+    </script>
+    <style>html { background: #f1f5f9; } html[data-theme="dark"] { background: #0f172a; }</style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="page_title">4U4N 无规则生存服务器</title>
     <link rel="icon" href="./img/icon.png">
@@ -51,6 +60,7 @@
     <script src="js/events.js" defer></script>
     <script src="js/navigation.js" defer></script>
     <script src="js/carousel.js" defer></script>
+    <script src="js/background.js" defer></script>
     <script src="js/server-status.js" defer></script>
     <script src="js/music-player.js" defer></script>
     <script src="js/gradient-tool.js" defer></script>
@@ -62,23 +72,20 @@
     <script src="js/preloader.js" defer></script>
     <script src="js/qq-avatar.js" defer></script>
     <script src="js/anti-devtools.js" defer></script>
-    <script src="js/i18n.js" defer></script>
+    <script src="js/i18n.js?v=20261116-announcement" defer></script>
     <script src="js/typing-effect.js" defer></script>
 
 </head>
 <body>
 
 <!-- ====== 高级加载界面 ====== -->
-<div id="preloader">
+<div id="preloader" role="status" aria-live="polite" aria-label="正在加载官网">
     <div class="preloader-inner">
-        <div class="preloader-grid"></div>
         <div class="preloader-logo"><img src="./img/4u4nc.png" alt="4U4N" class="preloader-logo-img"></div>
         <h1 class="preloader-title" data-i18n="preload_title">4U4N 无规则生存服务器</h1>
         <p class="preloader-subtitle" data-i18n="preload_subtitle">StarCraft Network</p>
-        <div class="preloader-icon"><i class="fas fa-cube"></i></div>
         <div class="preloader-bar-wrapper"><div class="preloader-bar" id="preloader-bar"></div></div>
         <p class="preloader-tip" id="preloader-tip" data-i18n="preload_loading">正在加载官网...</p>
-        <p class="preloader-version" data-i18n="preload_version">v2.0 · 正在为您准备世界</p>
     </div>
 </div>
 
@@ -100,8 +107,8 @@
                     <a href="#advantages" class="nav-link" data-i18n="nav_advantages">优势</a>
                     <a href="#rules" class="nav-link" data-i18n="nav_rules">规则</a>
                     <a href="#team" class="nav-link" data-i18n="nav_team">团队</a>
-                    <a href="#faq" class="nav-link" data-i18n="nav_faq">问题</a>
                     <a href="#social" class="nav-link" data-i18n="nav_social">社交媒体</a>
+                    <a href="#faq" class="nav-link" data-i18n="nav_faq">问题</a>
                     <span class="nav-divider" aria-hidden="true"></span>
                     <a href="javascript:void(0)" class="nav-link" data-action="help" data-i18n="nav_help">帮助</a>
                     <a href="javascript:void(0)" class="nav-link" data-action="announcement" data-i18n="nav_announce">公告</a>
@@ -152,8 +159,8 @@
             <a href="#advantages" class="nav-link" data-i18n="nav_advantages">优势</a>
             <a href="#rules" class="nav-link" data-i18n="nav_rules">规则</a>
             <a href="#team" class="nav-link" data-i18n="nav_team">团队</a>
-            <a href="#faq" class="nav-link" data-i18n="nav_faq">常见问题</a>
             <a href="#social" class="nav-link" data-i18n="nav_social">社交媒体</a>
+            <a href="#faq" class="nav-link" data-i18n="nav_faq">常见问题</a>
             <a href="javascript:void(0)" class="nav-link" data-action="help" data-i18n="nav_help">帮助</a>
             <a href="javascript:void(0)" class="nav-link" data-action="announcement" data-i18n="nav_announce">公告</a>
         </nav>
@@ -219,17 +226,6 @@
                 <p class="text-gray-400 text-xs mt-0.5" id="music-artist" data-i18n="music_artist">4U4N 服务器</p>
             </div>
             <button id="music-close-panel" class="text-gray-500 hover:text-white transition-colors"><i class="fas fa-times"></i></button>
-        </div>
-        <!-- 音乐源切换 -->
-        <div class="px-4 pb-2">
-            <div class="flex rounded-lg bg-gray-800/60 p-0.5 text-xs" id="music-source-switch">
-                <button class="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 rounded-md transition-all font-medium music-src-btn active" data-src="local">
-                    <i class="fas fa-folder-music text-[10px]"></i> 精选歌目
-                </button>
-                <button class="flex-1 flex items-center justify-center gap-1 py-1.5 px-2 rounded-md transition-all font-medium music-src-btn" data-src="cloud">
-                    <i class="fas fa-cloud text-[10px]"></i> 云歌单
-                </button>
-            </div>
         </div>
         <div class="px-4 py-2">
             <div class="relative h-1.5 bg-gray-700 rounded-full cursor-pointer group" id="music-progress-track">
@@ -340,28 +336,20 @@
 </section>
 
 <!-- ====== 服务器地址 ====== -->
-<section id="ip" class="py-20 bg-primary/5 text-center">
-    <div class="max-w-7xl mx-auto px-4">
-        <h2 class="text-4xl font-bold mb-8" data-i18n="ip_title">服务器地址</h2>
-        <div class="ip-panel inline-flex flex-col sm:flex-row items-center gap-6 bg-white px-8 py-6 rounded-lg shadow-sm">
-            <div class="inline-flex items-center gap-4">
-                <span class="text-sm text-gray-500" data-i18n="ip_main_line">主线：</span>
-                <span id="ip-text" class="text-xl md:text-2xl font-mono">4u4n.qiunaruto.top</span>
-                <button class="copy-btn" data-target="ip-text" data-msg="ip_copy_main"><i class="far fa-copy mr-2"></i><span data-i18n="copy_btn">复制</span></button>
-            </div>
-            <div class="inline-flex items-center gap-4">
-                <span class="text-sm text-gray-500" data-i18n="ip_second_line">副线：</span>
-                <span id="ip-text-secondary" class="text-xl md:text-2xl font-mono">4u4nc.qiunaruto.top</span>
-                <button class="copy-btn" style="background:linear-gradient(to right,#a855f7,#ec4899)" data-target="ip-text-secondary" data-msg="ip_copy_second"><i class="far fa-copy mr-2"></i><span data-i18n="copy_btn">复制</span></button>
-            </div>
-            <div class="inline-flex items-center gap-4">
-                <span class="text-sm text-gray-500" data-i18n="ip_fast_line">快捷：</span>
-                <span id="ip-text-fast" class="text-xl md:text-2xl font-mono">4u4n.fun</span>
-                <button class="copy-btn" style="background:linear-gradient(to right,#f59e0b,#f97316)" data-target="ip-text-fast" data-msg="ip_copy_fast"><i class="far fa-copy mr-2"></i><span data-i18n="copy_btn">复制</span></button>
+<section id="ip" class="bg-primary/5">
+    <div class="ip-layout max-w-7xl mx-auto px-4">
+        <div class="ip-intro">
+            <h2 class="text-4xl font-bold" data-i18n="ip_title">服务器地址</h2>
+            <p class="ip-description text-gray-600" data-i18n="ip_desc_ver">支持 Java 版本 1.21.6 - 26.x，核心目前处于1.21.11</p>
+            <p class="ip-note text-gray-600" data-i18n="ip_desc_merge">目前已经主副线路合并</p>
+        </div>
+        <div class="ip-panel ip-address-card bg-white">
+            <span class="ip-address-label text-sm text-gray-500" data-i18n="ip_main_line">唯一连接IP：</span>
+            <div class="ip-address-row">
+                <span id="ip-text" class="font-mono">4u4n.top</span>
+                <button type="button" class="copy-btn" data-target="ip-text" data-msg="ip_copy_main"><i class="far fa-copy mr-2" aria-hidden="true"></i><span data-i18n="copy_btn">复制</span></button>
             </div>
         </div>
-        <p class="mt-6 text-gray-600" data-i18n="ip_desc_ver">支持 Java 版本 1.21.6 - 26.x，核心目前处于1.21.11</p>
-        <p class="mt-2 text-gray-600" data-i18n="ip_desc_merge">目前已经主副线路合并</p>
     </div>
 </section>
 
@@ -406,6 +394,8 @@
                     <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止服务器内恶意刷屏</span></li>
                     <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止制造超大规模红石装置恶意破坏性能</span></li>
                     <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止对服务器进行DDoS等网络攻击</span></li>
+                    <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止出现违反服务条款的行为</span></li>
+                </ul>
                 </ul>
             </div>
             <div class="bg-white p-8 rounded-lg shadow-lg">
@@ -414,6 +404,7 @@
                     <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止进行真实货币交易</span></li>
                     <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止在群内发布同类服务器</span></li>
                     <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止涉及违法以及黄赌毒内容</span></li>
+                    <li class="flex items-start"><i class="fa fa-times text-red-500 mt-1 mr-2"></i><span>禁止违反群内群规</span></li>
                 </ul>
             </div>
         </div>
@@ -604,7 +595,7 @@
             <div><h4 class="text-lg font-bold mb-4" data-i18n="footer_contact">联系我们</h4><ul class="space-y-2"><li class="text-gray-400">QQ一群：758633338</li><li class="text-gray-400">QQ二群：1104679773</li><li class="text-gray-400">邮箱：Feedback@4u4n.fun</li></ul></div>
             <div><h4 class="text-lg font-bold mb-4" data-i18n="footer_follow">关注我们</h4><div class="flex space-x-4"><a href="https://qm.qq.com/q/ixhYlCRH5C" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-qq text-xl"></i></a><a href="#" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-weixin text-xl"></i></a><a href="https://www.bilibili.com/video/BV1sVuRzvEoJ/" class="text-gray-400 hover:text-white transition-colors"><i class="fab fa-bilibili text-xl"></i></a></div></div>
         </div>
-        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm"><p data-i18n="footer_copyright">© 2026 StarCraft 版权所有</p><p>京ICP备20079823号</p></div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400 text-sm"><p data-i18n="footer_copyright">© 2026 StarCraft 版权所有</p><p>侵权必究</p></div>
     </div>
 </footer>
 
@@ -690,7 +681,7 @@
             <p class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400" data-i18n="announce_modal_p2" data-i18n-type="html">服务器纯公益，<strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">无任何充值氪金项目</strong></p>
             <p class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400" data-i18n="announce_modal_p3" data-i18n-type="html">所有称号均可通过命令 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">/pit shop</strong> 以消耗物品方式获取</p>
             <p class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400" data-i18n="announce_modal_p4" data-i18n-type="html">当你的服务器等级 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">超过一万</strong> 可获取专属称号和聊天颜色权限</p>
-            <p class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400" data-i18n="announce_modal_p5" data-i18n-type="html">服务器内禁止刷屏和宣传其他服务器，违者禁言 <strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">7</strong> 天</p>
+            <p class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400" data-i18n="announce_modal_p5" data-i18n-type="html">服务器内禁止刷屏和宣传其他服务器，违者将进行<strong class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-400">处罚</strong></p>
             <p class="text-right text-transparent bg-clip-text bg-gradient-to-r from-green-500 to-teal-400 mt-4" data-i18n="announce_modal_footer" data-i18n-type="html">祝您游玩愉快<br>By StarCraft Network</p>
             <div class="mt-6 pt-4 border-t border-gray-200 text-center">
                 <a href="docs.html#announcement" class="inline-flex items-center gap-1.5 text-sm text-primary hover:text-secondary font-medium transition-colors">

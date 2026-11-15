@@ -14,7 +14,8 @@ body {
     background-attachment: fixed;
     font-size: 16px;
     position: relative;
-    animation: backgroundSlide 30s infinite;
+    background-color: #f1f5f9;
+    isolation: isolate;
 }
 
 body::before {
@@ -28,14 +29,12 @@ body::before {
     z-index: -1;
 }
 
-@keyframes backgroundSlide {
-    0% { background-image: url('../img/bgh_1.png'); }
-    20% { background-image: url('../img/bgh_2.png'); }
-    40% { background-image: url('../img/bgh_3.png'); }
-    60% { background-image: url('../img/bgh_4.png'); }
-    80% { background-image: url('../img/bgh_5.png'); }
-    100% { background-image: url('../img/bgh_1.png'); }
-}
+/* 下一张背景解码后才淡入，始终保留下层背景，避免闪白。 */
+.site-background { position: fixed; inset: 0; z-index: -2; pointer-events: none; }
+.site-background-layer { position: absolute; inset: 0; background-size: cover; background-position: center; opacity: 1; }
+.site-background-layer.is-incoming { opacity: 0; transition: opacity 1.2s ease; }
+.site-background-layer.is-incoming.is-visible { opacity: 1; }
+[data-theme="dark"] body { background-color: #0f172a; }
 
 .bg-white {
     background-color: rgba(255, 255, 255, 0.9) !important;

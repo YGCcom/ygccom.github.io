@@ -67,19 +67,6 @@ html:not([data-theme="dark"]) #music-panel .bg-gray-600 { background-color: #d1d
     50% { box-shadow: 0 0 0 8px rgba(6, 182, 212, 0); }
 }
 
-/* 音乐源切换 */
-#music-source-switch { border: 1px solid rgba(75,85,99,0.4); }
-.music-src-btn { color: #9ca3af; cursor: pointer; }
-.music-src-btn.active { background: linear-gradient(135deg, #06b6d4, #14b8a6); color: #fff; box-shadow: 0 2px 8px rgba(6,182,212,0.3); }
-.music-src-btn:hover:not(.active) { color: #e2e8f0; }
-html:not([data-theme="dark"]) #music-source-switch { background: rgba(229,231,235,0.6) !important; border-color: rgba(209,213,219,0.6) !important; }
-html:not([data-theme="dark"]) .music-src-btn { color: #6b7280; }
-html:not([data-theme="dark"]) .music-src-btn:hover:not(.active) { color: #111827; }
-
-/* 云歌单独立盒子 */
-#music-cloud-box { z-index: 1; }
-#music-cloud-box iframe { display: block; border: none; }
-
 /* 小屏 */
 @media (max-width: 640px) {
     #music-player { bottom: 1rem; right: 1rem; }

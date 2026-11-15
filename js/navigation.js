@@ -62,6 +62,10 @@
             });
         }
 
+        // 定位与高亮共用实际导航高度，避免 CSS 两份滚动间距叠加。
+        function navHeight() { return nav ? nav.getBoundingClientRect().height : NAV_H; }
+        function sectionTop(section) { return section.getBoundingClientRect().top + window.pageYOffset; }
+
         // ====== 锚点平滑滚动 ======
         // 旧实现会对 href="#" 执行 document.querySelector('#') 并抛出 SyntaxError，
         // 这里跳过空锚点与无效选择器；跨页面链接（docs.html#xxx）交给浏览器处理。
@@ -77,8 +81,11 @@
                 }
                 if (!target) return;
                 e.preventDefault();
-                target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
                 if (window.innerWidth < 768) closeMenu();
+                window.scrollTo({
+                    top: Math.max(0, sectionTop(target) - navHeight() - 16),
+                    behavior: reduceMotion ? 'auto' : 'smooth'
+                });
             });
         });
 
@@ -97,13 +104,13 @@
                 backToTop.style.opacity = visible ? '1' : '0';
                 backToTop.style.visibility = visible ? 'visible' : 'hidden';
             }
-            if (nav) nav.classList.toggle('is-scrolled', y > 16);
+            if (nav) nav.classList.toggle('is-scrolled', y > 1);
 
             if (navLinks.length && sections.length) {
-                var probe = y + NAV_H + 48;
+                var probe = y + navHeight() + 24;
                 var current = '';
                 for (var i = 0; i < sections.length; i++) {
-                    if (sections[i].offsetTop <= probe) current = sections[i].id;
+                    if (sectionTop(sections[i]) <= probe) current = sections[i].id;
                     else break;
                 }
                 for (var j = 0; j < navLinks.length; j++) {
